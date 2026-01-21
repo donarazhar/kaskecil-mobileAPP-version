@@ -1,0 +1,62 @@
+{
+    "name": "kas-kecil",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Aplikasi Kas Kecil - Monorepo (Web, Mobile, API)",
+    "author": "Your Name",
+    "license": "MIT",
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
+    "scripts": {
+        "dev": "turbo run dev",
+        "build": "turbo run build",
+        "lint": "turbo run lint",
+        "test": "turbo run test",
+        "clean": "turbo run clean && rm -rf node_modules",
+        "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+        "dev:api": "pnpm --filter @kas-kecil/api dev",
+        "dev:web": "pnpm --filter @kas-kecil/web dev",
+        "dev:mobile": "pnpm --filter @kas-kecil/mobile start",
+        "dev:all": "concurrently -n API,WEB -c blue,green \"cd apps/api && php artisan serve --host=0.0.0.0\" \"pnpm dev:web\"",
+        "build:web": "pnpm --filter @kas-kecil/web build",
+        "build:mobile:android": "pnpm --filter @kas-kecil/mobile build:android",
+        "build:mobile:ios": "pnpm --filter @kas-kecil/mobile build:ios",
+        "db:migrate": "pnpm --filter @kas-kecil/api artisan migrate",
+        "db:seed": "pnpm --filter @kas-kecil/api artisan db:seed",
+        "db:fresh": "pnpm --filter @kas-kecil/api artisan migrate:fresh --seed",
+        "prepare": "husky install"
+    },
+    "devDependencies": {
+        "@changesets/cli": "^2.27.0",
+        "concurrently": "^9.2.1",
+        "husky": "^9.1.0",
+        "lint-staged": "^15.2.0",
+        "prettier": "^3.4.0",
+        "turbo": "^2.3.0"
+    },
+    "packageManager": "pnpm@10.28.0",
+    "engines": {
+        "node": ">=20.0.0",
+        "pnpm": ">=9.0.0"
+    },
+    "pnpm": {
+        "overrides": {
+            "@types/react": "^18.2.0",
+            "@types/react-dom": "^18.2.0"
+        }
+    },
+    "lint-staged": {
+        "*.{ts,tsx,js,jsx}": [
+            "eslint --fix",
+            "prettier --write"
+        ],
+        "*.{json,md}": [
+            "prettier --write"
+        ]
+    },
+    "dependencies": {
+        "metro-runtime": "^0.83.3"
+    }
+}

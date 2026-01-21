@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kas Kecil v4.0 - Dokumentasi Aplikasi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <span class="logo-icon">💰</span>
+                <span class="logo-text">Kas Kecil <span class="version">v4.0</span></span>
+            </a>
+            <button class="nav-toggle" id="navToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#overview" class="nav-link">Overview</a></li>
+                <li><a href="#erd" class="nav-link">ERD</a></li>
+                <li><a href="#roles" class="nav-link">Roles</a></li>
+                <li><a href="#workflow" class="nav-link">Workflow</a></li>
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li><a href="#tech" class="nav-link">Tech Stack</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-badge">Dokumentasi Resmi</div>
+            <h1 class="hero-title">Kas Kecil Imprest Methode App</h1>
+            <p class="hero-subtitle">Sistem pengelolaan kas kecil berbasis metode <strong>Imprest (Dana Tetap)</strong>
+                dengan multi-platform support</p>
+            <div class="hero-actions">
+                <a href="#erd" class="btn btn-primary">
+                    <span>Lihat ERD</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </a>
+                <a href="#workflow" class="btn btn-secondary">Pelajari Workflow</a>
+            </div>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-value">10+</span>
+                    <span class="stat-label">Database Tables</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">2</span>
+                    <span class="stat-label">User Roles</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-value">3</span>
+                    <span class="stat-label">Platforms</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Overview Section -->
+    <section id="overview" class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Overview</span>
+                <h2 class="section-title">Struktur Hierarki Organisasi</h2>
+                <p class="section-subtitle">Aplikasi mendukung struktur multi-level dari Instansi hingga Unit kerja</p>
+            </div>
+
+            <div class="hierarchy-visual">
+                <div class="hierarchy-level level-1">
+                    <div class="hierarchy-card">
+                        <div class="card-icon">🏛️</div>
+                        <h3>Instansi</h3>
+                        <p>Organisasi Induk</p>
+                        <span class="card-example">Contoh: YPI Al Azhar</span>
+                    </div>
+                </div>
+                <div class="hierarchy-connector"></div>
+                <div class="hierarchy-level level-2">
+                    <div class="hierarchy-card">
+                        <div class="card-icon">🏢</div>
+                        <h3>Cabang</h3>
+                        <p>Kantor Regional</p>
+                        <span class="card-example">Contoh: Jakarta, Bandung</span>
+                    </div>
+                    <div class="hierarchy-card">
+                        <div class="card-icon">🏢</div>
+                        <h3>Cabang</h3>
+                        <p>Kantor Regional</p>
+                        <span class="card-example">Contoh: Tangerang</span>
+                    </div>
+                </div>
+                <div class="hierarchy-connector"></div>
+                <div class="hierarchy-level level-3">
+                    <div class="hierarchy-card small">
+                        <div class="card-icon">📋</div>
+                        <h3>Unit</h3>
+                        <p>Unit Keuangan</p>
+                    </div>
+                    <div class="hierarchy-card small">
+                        <div class="card-icon">📋</div>
+                        <h3>Unit</h3>
+                        <p>Unit SDM</p>
+                    </div>
+                    <div class="hierarchy-card small">
+                        <div class="card-icon">📋</div>
+                        <h3>Unit</h3>
+                        <p>Unit IT</p>
+                    </div>
+                    <div class="hierarchy-card small">
+                        <div class="card-icon">📋</div>
+                        <h3>Unit</h3>
+                        <p>Unit Marketing</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ERD Section -->
+    <section id="erd" class="section section-dark">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Database</span>
+                <h2 class="section-title">Entity Relationship Diagram</h2>
+                <p class="section-subtitle">Struktur database lengkap dengan 10+ tabel dan relasinya</p>
+            </div>
+
+            <div class="erd-container">
+                <div class="erd-diagram" id="erdDiagram">
+                    <pre class="mermaid">
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#6366f1', 'primaryTextColor': '#f9fafb', 'lineColor': '#818cf8'}}}%%
+flowchart LR
+    subgraph ORG["🏛️ ORGANISASI"]
+        direction TB
+        INSTANSI["<b>INSTANSI</b><br/>id, nama_instansi<br/>alamat, telepon, email"]
+        CABANG["<b>CABANG</b><br/>id, instansi_id<br/>kode_cabang, nama_cabang<br/>plafon_kas, is_active"]
+        UNIT["<b>UNIT</b><br/>id, cabang_id<br/>kode_unit, nama_unit<br/>plafon_kas, is_active"]
+    end
+
+    subgraph AUTH["🔐 AUTENTIKASI"]
+        direction TB
+        ROLES["<b>ROLES</b><br/>id, name<br/>display_name, description"]
+        USERS["<b>USERS</b><br/>id, nama, email<br/>role_id, cabang_id, unit_id<br/>is_active"]
+    end
+
+    subgraph AKUN["📊 AKUNTANSI"]
+        direction TB
+        AKUN_AAS["<b>AKUN_AAS</b><br/>id, unit_id<br/>kode_akun, nama_akun<br/>jenis (debet/kredit)"]
+        AKUN_MA["<b>AKUN_MATANGGARAN</b><br/>id, akun_aas_id<br/>kode_matanggaran, saldo"]
+    end
+
+    subgraph TRX["💵 TRANSAKSI"]
+        direction TB
+        TRANSAKSI["<b>TRANSAKSI</b><br/>id, cabang_id, unit_id<br/>tanggal, kategori, jumlah<br/>user_id, lampiran"]
+        TRX_SHADOW["<b>TRANSAKSI_SHADOW</b><br/>id, cabang_id, unit_id<br/>status, approved_by<br/>catatan_approval"]
+    end
+
+    INSTANSI --> CABANG
+    CABANG --> UNIT
+    UNIT --> USERS
+    ROLES --> USERS
+    UNIT --> AKUN_AAS
+    AKUN_AAS --> AKUN_MA
+    UNIT --> TRANSAKSI
+    USERS --> TRANSAKSI
+    UNIT --> TRX_SHADOW
+    USERS --> TRX_SHADOW
+                    </pre>
+                </div>
+            </div>
+
+            <div class="tables-grid">
+                <div class="table-card">
+                    <div class="table-icon">🏛️</div>
+                    <h4>instansi</h4>
+                    <p>Organisasi induk dengan informasi kepala instansi</p>
+                </div>
+                <div class="table-card">
+                    <div class="table-icon">🏢</div>
+                    <h4>cabang</h4>
+                    <p>Kantor cabang dengan plafon kas dan status aktif</p>
+                </div>
+                <div class="table-card">
+                    <div class="table-icon">📋</div>
+                    <h4>unit</h4>
+                    <p>Unit kerja dengan plafon kas tersendiri</p>
+                </div>
+                <div class="table-card">
+                    <div class="table-icon">👥</div>
+                    <h4>users</h4>
+                    <p>Pengguna dengan role, cabang, dan unit assignment</p>
+                </div>
+                <div class="table-card">
+                    <div class="table-icon">🔐</div>
+                    <h4>roles</h4>
+                    <p>Definisi role dan hak akses</p>
+                </div>
+                <div class="table-card">
+                    <div class="table-icon">💵</div>
+                    <h4>transaksi</h4>
+                    <p>Transaksi kas kecil yang sudah final</p>
+                </div>
+                <div class="table-card">
+                    <div class="table-icon">📝</div>
+                    <h4>transaksi_shadow</h4>
+                    <p>Draft transaksi dengan sistem approval</p>
+                </div>
+                <div class="table-card">
+                    <div class="table-icon">📊</div>
+                    <h4>akun_aas</h4>
+                    <p>Chart of Account (Debet/Kredit)</p>
+                </div>
+                <div class="table-card">
+                    <div class="table-icon">💰</div>
+                    <h4>akun_matanggaran</h4>
+                    <p>Kode mata anggaran dengan saldo</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Roles Section -->
+    <section id="roles" class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Access Control</span>
+                <h2 class="section-title">Role-Based Access Control</h2>
+                <p class="section-subtitle">Hierarki peran pengguna dan hak akses masing-masing</p>
+            </div>
+
+            <div class="roles-grid roles-grid-2">
+                <div class="role-card role-super">
+                    <div class="role-badge">Tertinggi</div>
+                    <div class="role-icon">🔑</div>
+                    <h3>Super Admin</h3>
+                    <p class="role-desc">Akses penuh ke semua data dan konfigurasi sistem</p>
+                    <ul class="role-permissions">
+                        <li>✅ Kelola Semua Instansi, Cabang dan Unit</li>
+                        <li>✅ Atur Plafon Kas Per Unit sebagai Pembentukan Kas</li>
+                        <li>✅ Kelola Semua User</li>
+                        <li>✅ Lihat Semua Transaksi Unit</li>
+                        <li>✅ Akses Laporan Konsolidasi & Rekap</li>
+                    </ul>
+                </div>
+
+                <div class="role-card role-unit">
+                    <div class="role-badge">Level 2</div>
+                    <div class="role-icon">📋</div>
+                    <h3>Admin Unit</h3>
+                    <p class="role-desc">Input transaksi untuk unit sendiri sesuai plafon kas</p>
+                    <ul class="role-permissions">
+                        <li>✅ Kelola Akun AAS & Mata Anggaran</li>
+                        <li>✅ Input Transaksi Pengeluaran & Pengisian</li>
+                        <li>✅ Upload Bukti Transaksi</li>
+                        <li>✅ Akses Laporan</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Section -->
+    <section id="workflow" class="section section-gradient">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Business Flow</span>
+                <h2 class="section-title">Workflow Bisnis</h2>
+                <p class="section-subtitle">Alur kerja aplikasi mengikuti metode Imprest (Dana Tetap)</p>
+            </div>
+
+            <div class="workflow-tabs">
+                <button class="tab-btn active" data-tab="superadmin">🔑 Super Admin</button>
+                <button class="tab-btn" data-tab="adminunit">📋 Admin Unit</button>
+            </div>
+
+            <div class="workflow-content">
+                <!-- Super Admin Tab -->
+                <div class="tab-panel active" id="superadmin">
+                    <h3 class="workflow-subtitle">1. Setup Organisasi</h3>
+                    <div class="workflow-flow">
+                        <div class="flow-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>🔑 Super Admin</h4>
+                                <p>Login ke sistem</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>🏛️ Buat Instansi</h4>
+                                <p>Data organisasi induk</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>🏢 Buat Cabang</h4>
+                                <p>Kantor regional + plafon</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step success">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>📋 Buat Unit</h4>
+                                <p>Unit kerja + plafon kas</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="workflow-subtitle">2. Manajemen Pengguna</h3>
+                    <div class="workflow-flow">
+                        <div class="flow-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>🔑 Super Admin</h4>
+                                <p>Menu Pengguna</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>➕ Tambah User</h4>
+                                <p>Input nama, email, role</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>🏢 Pilih Unit</h4>
+                                <p>Assign ke cabang/unit</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step success">
+                            <div class="step-number">✓</div>
+                            <div class="step-content">
+                                <h4>✅ User Aktif</h4>
+                                <p>Siap digunakan</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="workflow-subtitle">3. Cetak Laporan</h3>
+                    <div class="workflow-flow">
+                        <div class="flow-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>🔑 Super Admin</h4>
+                                <p>Menu Cetak Laporan</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step highlight">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>� Pilih Jenis Laporan</h4>
+                                <div class="kategori-badges">
+                                    <span class="badge badge-blue">Akun AAS</span>
+                                    <span class="badge badge-green">Mata Anggaran</span>
+                                    <span class="badge badge-red">Transaksi</span>
+                                    <span class="badge badge-purple">Plafon per Unit</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>� Filter Data</h4>
+                                <p>Unit, Cabang, Periode</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step success">
+                            <div class="step-number">✓</div>
+                            <div class="step-content">
+                                <h4>�️ Cetak/Ekspor</h4>
+                                <p>PDF/Excel</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="workflow-subtitle">4. Activity Log & Backup</h3>
+                    <div class="workflow-flow">
+                        <div class="flow-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>🔑 Super Admin</h4>
+                                <p>Menu Settings</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step highlight">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>📜 Activity Log</h4>
+                                <p>Riwayat aktivitas user</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step highlight">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>💾 Backup Data</h4>
+                                <p>Unduh backup database</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step success">
+                            <div class="step-number">✓</div>
+                            <div class="step-content">
+                                <h4>✅ Selesai</h4>
+                                <p>Data aman</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-icon">💡</div>
+                        <div class="info-content">
+                            <strong>Pembentukan Kas:</strong>
+                            <p>Super Admin mengatur plafon kas per unit sebagai <strong>Pembentukan Kas Awal</strong>.
+                                Ini menjadi dasar saldo kas kecil untuk setiap unit.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Unit Tab -->
+                <div class="tab-panel" id="adminunit">
+                    <h3 class="workflow-subtitle">1. Input Data Master</h3>
+                    <div class="workflow-flow">
+                        <div class="flow-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>📋 Admin Unit</h4>
+                                <p>Login ke sistem</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>📊 Kelola Akun AAS</h4>
+                                <p>Buat akun debet/kredit</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step success">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>💰 Kelola Mata Anggaran</h4>
+                                <p>Set kode & saldo anggaran</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="workflow-subtitle">2. Transaksi Pengeluaran Harian</h3>
+                    <div class="workflow-flow">
+                        <div class="flow-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>📋 Admin Unit</h4>
+                                <p>Menu Transaksi</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>📝 Input Transaksi</h4>
+                                <p>Pilih Pengeluaran Kas</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step highlight">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>📊 Pilih Mata Anggaran</h4>
+                                <p>Kategori pengeluaran</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>💵 Input Nominal</h4>
+                                <p>Jumlah pengeluaran</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="step-number">5</div>
+                            <div class="step-content">
+                                <h4>📎 Upload Lampiran</h4>
+                                <p>(Optional) Bukti transaksi</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step success">
+                            <div class="step-number">✓</div>
+                            <div class="step-content">
+                                <h4>✅ Tersimpan</h4>
+                                <p>Saldo berkurang</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="workflow-subtitle">3. Transaksi Pengisian Kas</h3>
+                    <div class="workflow-flow">
+                        <div class="flow-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>📋 Admin Unit</h4>
+                                <p>Menu Transaksi</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>📝 Input Transaksi</h4>
+                                <p>Pilih Pengisian Kas</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step highlight">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>📊 Pilih Mata Anggaran</h4>
+                                <p>Kategori pengisian</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>📝 Input Rincian</h4>
+                                <p>Detail pengisian</p>
+                            </div>
+                        </div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-step success">
+                            <div class="step-number">✓</div>
+                            <div class="step-content">
+                                <h4>✅ Tersimpan</h4>
+                                <p>Saldo bertambah</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="info-icon">💡</div>
+                        <div class="info-content">
+                            <strong>Metode Imprest (Dana Tetap):</strong>
+                            <p>Setiap pengeluaran mengurangi saldo kas. Pengisian kas mengembalikan saldo ke plafon
+                                awal, memudahkan kontrol dan audit keuangan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Features</span>
+                <h2 class="section-title">Core Features</h2>
+                <p class="section-subtitle">Fitur-fitur utama yang tersedia dalam aplikasi</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-category">
+                    <div class="category-header">
+                        <span class="category-icon">🏢</span>
+                        <h3>Manajemen Organisasi</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>CRUD Instansi dengan info kepala</li>
+                        <li>CRUD Cabang dengan kode unik & plafon</li>
+                        <li>CRUD Unit kerja per cabang</li>
+                        <li>Manajemen User dengan role-based access</li>
+                    </ul>
+                </div>
+
+                <div class="feature-category">
+                    <div class="category-header">
+                        <span class="category-icon">📊</span>
+                        <h3>Manajemen Akun</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>Akun AAS (Debet/Kredit) per unit</li>
+                        <li>Mata Anggaran dengan tracking saldo</li>
+                        <li>Contoh: Kas Kecil, Beban ATK, Transport</li>
+                        <li>Integrasi dengan transaksi</li>
+                    </ul>
+                </div>
+
+                <div class="feature-category">
+                    <div class="category-header">
+                        <span class="category-icon">💵</span>
+                        <h3>Manajemen Transaksi</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>Input transaksi dengan bukti</li>
+                        <li>Upload hingga 3 lampiran</li>
+                        <li>Filter berdasar tanggal & kategori</li>
+                        <li>Rekap transaksi harian</li>
+                    </ul>
+                </div>
+
+                <div class="feature-category">
+                    <div class="category-header">
+                        <span class="category-icon">⚖️</span>
+                        <h3>Draft & Approval</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>Simpan transaksi sebagai draft</li>
+                        <li>Submit pengajuan ke atasan</li>
+                        <li>Review & approval dengan catatan</li>
+                        <li>Notifikasi status update</li>
+                    </ul>
+                </div>
+
+                <div class="feature-category">
+                    <div class="category-header">
+                        <span class="category-icon">📈</span>
+                        <h3>Dashboard & Laporan</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>Dashboard summary per role</li>
+                        <li>Rekap keuangan per unit/cabang</li>
+                        <li>Laporan konsolidasi</li>
+                        <li>Export data Excel/PDF</li>
+                    </ul>
+                </div>
+
+                <div class="feature-category">
+                    <div class="category-header">
+                        <span class="category-icon">⚙️</span>
+                        <h3>Fitur Teknis</h3>
+                    </div>
+                    <ul class="feature-list">
+                        <li>Authentication token-based API</li>
+                        <li>FCM Push Notifications</li>
+                        <li>Multi-platform (Web + Mobile)</li>
+                        <li>Global settings & konfigurasi</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section id="tech" class="section section-dark">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Technology</span>
+                <h2 class="section-title">Tech Stack</h2>
+                <p class="section-subtitle">Teknologi modern yang digunakan dalam pengembangan</p>
+            </div>
+
+            <div class="tech-architecture">
+                <div class="arch-layer">
+                    <h4>Frontend</h4>
+                    <div class="tech-cards">
+                        <div class="tech-card">
+                            <span class="tech-emoji">🌐</span>
+                            <span class="tech-name">React + Vite</span>
+                            <span class="tech-desc">Web Admin Panel</span>
+                        </div>
+                        <div class="tech-card">
+                            <span class="tech-emoji">📱</span>
+                            <span class="tech-name">React Native</span>
+                            <span class="tech-desc">Mobile App (Expo)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-connector">
+                    <svg width="40" height="60" viewBox="0 0 40 60">
+                        <path d="M20 0v60" stroke="var(--primary)" stroke-width="2" stroke-dasharray="4 4" />
+                    </svg>
+                </div>
+
+                <div class="arch-layer">
+                    <h4>Shared Packages</h4>
+                    <div class="tech-cards">
+                        <div class="tech-card small">
+                            <span class="tech-name">📦 API Client</span>
+                        </div>
+                        <div class="tech-card small">
+                            <span class="tech-name">📦 Validators (Zod)</span>
+                        </div>
+                        <div class="tech-card small">
+                            <span class="tech-name">📦 Shared Types</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-connector">
+                    <svg width="40" height="60" viewBox="0 0 40 60">
+                        <path d="M20 0v60" stroke="var(--primary)" stroke-width="2" stroke-dasharray="4 4" />
+                    </svg>
+                </div>
+
+                <div class="arch-layer">
+                    <h4>Backend</h4>
+                    <div class="tech-cards">
+                        <div class="tech-card">
+                            <span class="tech-emoji">⚙️</span>
+                            <span class="tech-name">Laravel 12</span>
+                            <span class="tech-desc">REST API (PHP 8.2+)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arch-connector">
+                    <svg width="40" height="60" viewBox="0 0 40 60">
+                        <path d="M20 0v60" stroke="var(--primary)" stroke-width="2" stroke-dasharray="4 4" />
+                    </svg>
+                </div>
+
+                <div class="arch-layer">
+                    <h4>Database</h4>
+                    <div class="tech-cards">
+                        <div class="tech-card">
+                            <span class="tech-emoji">🗃️</span>
+                            <span class="tech-name">PostgreSQL</span>
+                            <span class="tech-desc">Primary Database</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="commands-section">
+                <h3>Quick Start Commands</h3>
+                <div class="command-grid">
+                    <div class="command-item">
+                        <code>pnpm install</code>
+                        <span>Install dependencies</span>
+                    </div>
+                    <div class="command-item">
+                        <code>pnpm docker:up</code>
+                        <span>Start database</span>
+                    </div>
+                    <div class="command-item">
+                        <code>pnpm db:fresh</code>
+                        <span>Reset & seed database</span>
+                    </div>
+                    <div class="command-item">
+                        <code>pnpm dev</code>
+                        <span>Run all apps</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="credentials-box">
+                <h3>🔐 Default Login Credentials</h3>
+                <div class="cred-grid">
+                    <div class="cred-item">
+                        <span class="cred-role">Super Admin</span>
+                        <span class="cred-email">admin@kaskecil.com</span>
+                        <span class="cred-pass">password</span>
+                    </div>
+                    <div class="cred-item">
+                        <span class="cred-role">Admin Unit</span>
+                        <span class="cred-email">admin.unit@kaskecil.com</span>
+                        <span class="cred-pass">password</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo-icon">💰</span>
+                    <span class="logo-text">Kas Kecil v4.0</span>
+                </div>
+                <p class="footer-text">
+                    Dokumentasi ini dibuat berdasarkan analisis kode sumber aplikasi.<br>
+                    Untuk detail teknis lebih lanjut, lihat file <code>WORKFLOW.md</code> di root project.
+                </p>
+                <div class="footer-meta">
+                    <span>© 2026 Kas Kecil Imprest Methode App</span>
+                    <span>•</span>
+                    <span>Built with ❤️</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
