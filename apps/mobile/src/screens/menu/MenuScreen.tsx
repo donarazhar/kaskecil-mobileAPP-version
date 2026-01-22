@@ -145,14 +145,6 @@ export default function MenuScreen() {
                         onPress={() => navigation.navigate('Profile')}
                     />
                     <View className="h-px bg-gray-100 mx-4" />
-                    <MenuItem
-                        icon={Bell}
-                        label={t('menu.notifications')}
-                        description={t('menu.notificationsDesc')}
-                        onPress={() => navigation.navigate('Notifications')}
-                        badge={3}
-                    />
-                    <View className="h-px bg-gray-100 mx-4" />
                     {/* Language Selector */}
                     <LanguageSelector variant="menu-item" />
                 </MenuSection>
