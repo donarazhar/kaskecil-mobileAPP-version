@@ -3,7 +3,7 @@ import { STORAGE_KEYS } from '../shared';
 
 // Platform-agnostic config
 let config = {
-    apiUrl: 'http://localhost:8000/api',
+    apiUrl: 'https://api.donarazhar.site/api',
     getToken: (): string | null => null,
     setToken: (_token: string): void => { },
     removeToken: (): void => { },

@@ -13,7 +13,7 @@ import AnimatedSplashScreen from './screens/SplashScreen';
 
 // API URL for mobile - point to your backend server
 // Use your computer's network IP when testing on physical device
-const API_URL = 'http://10.0.2.2:8000/api';
+const API_URL = 'https://api.donarazhar.site/api';
 
 // Token cache for sync access (SecureStore is async)
 let tokenCache: string | null = null;
