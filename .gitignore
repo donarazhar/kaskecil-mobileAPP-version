@@ -3,3 +3,16 @@ node_modules/
 .turbo/
 dist/
 .env
+# Local config files
+.easignore
+empty_known_hosts
+nginx_kaskecil.conf
+
+# Build artifacts
+apps/web/web_dist.tar.gz
+apps/web/maintenance.html
+
+# Local dev files
+apps/web/src/lib/api/
+apps/web/src/lib/validators/
+apps/web/src/utils/
