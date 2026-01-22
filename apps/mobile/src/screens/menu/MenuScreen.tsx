@@ -196,7 +196,7 @@ export default function MenuScreen() {
                         icon={Smartphone}
                         label={t('menu.aboutApp')}
                         description={t('menu.aboutAppDesc')}
-                        onPress={() => Alert.alert(t('common.appName'), `${t('common.version')} 1.0.0\n\n${t('common.appTagline')}`)}
+                        onPress={() => Alert.alert(t('common.appName'), `${t('common.version')} 4.0\n\n${t('common.appTagline')}`)}
                     />
                 </MenuSection>
 
@@ -222,7 +222,7 @@ export default function MenuScreen() {
                         </View>
                         <Text className="text-gray-400 font-medium">{t('common.appName')}</Text>
                     </View>
-                    <Text className="text-gray-300 text-xs">v1.0.0 • © 2026</Text>
+                    <Text className="text-gray-300 text-xs">v4.0 • © 2026</Text>
                 </View>
             </ScrollView>
         </SafeAreaView>
