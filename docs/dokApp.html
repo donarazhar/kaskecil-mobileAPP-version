@@ -1,838 +1,913 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kas Kecil v4.0 - Dokumentasi Aplikasi</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    <title>Kaskecil Server Deployment Guide</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap"
         rel="stylesheet">
+    <!-- Mermaid JS -->
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <script>mermaid.initialize({ startOnLoad: true, theme: 'default', securityLevel: 'loose' });</script>
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        code,
+        pre {
+            font-family: 'Fira Code', monospace;
+        }
+
+        .sidebar-link.active {
+            background-color: #2563eb;
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0f172a',
+                        secondary: '#334155',
+                        accent: '#2563eb',
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 
-<body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="#" class="nav-logo">
-                <span class="logo-icon">💰</span>
-                <span class="logo-text">Kas Kecil <span class="version">v4.0</span></span>
-            </a>
-            <button class="nav-toggle" id="navToggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="#overview" class="nav-link">Overview</a></li>
-                <li><a href="#erd" class="nav-link">ERD</a></li>
-                <li><a href="#roles" class="nav-link">Roles</a></li>
-                <li><a href="#workflow" class="nav-link">Workflow</a></li>
-                <li><a href="#features" class="nav-link">Features</a></li>
-                <li><a href="#tech" class="nav-link">Tech Stack</a></li>
-            </ul>
-        </div>
-    </nav>
+<body class="bg-slate-50 text-slate-800" x-data="{ activeSection: 'intro' }">
 
-    <!-- Hero Section -->
-    <header class="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-content">
-            <div class="hero-badge">Dokumentasi Resmi</div>
-            <h1 class="hero-title">Kas Kecil Imprest Methode App</h1>
-            <p class="hero-subtitle">Sistem pengelolaan kas kecil berbasis metode <strong>Imprest (Dana Tetap)</strong>
-                dengan multi-platform support</p>
-            <div class="hero-actions">
-                <a href="#erd" class="btn btn-primary">
-                    <span>Lihat ERD</span>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                </a>
-                <a href="#workflow" class="btn btn-secondary">Pelajari Workflow</a>
+    <!-- Header -->
+    <header class="fixed top-0 w-full bg-white/90 backdrop-blur-md border-b border-slate-200 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">K
+                </div>
+                <h1 class="text-xl font-bold text-slate-900 tracking-tight">Kaskecil <span
+                        class="text-slate-500 font-normal">Deployment Docs</span></h1>
             </div>
-            <div class="hero-stats">
-                <div class="stat">
-                    <span class="stat-value">10+</span>
-                    <span class="stat-label">Database Tables</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-value">2</span>
-                    <span class="stat-label">User Roles</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-value">3</span>
-                    <span class="stat-label">Platforms</span>
-                </div>
-            </div>
+            <div class="text-sm text-slate-500 hidden sm:block">Updated: January 2026</div>
         </div>
     </header>
 
-    <!-- Overview Section -->
-    <section id="overview" class="section">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-badge">Overview</span>
-                <h2 class="section-title">Struktur Hierarki Organisasi</h2>
-                <p class="section-subtitle">Aplikasi mendukung struktur multi-level dari Instansi hingga Unit kerja</p>
-            </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-12 flex gap-8">
 
-            <div class="hierarchy-visual">
-                <div class="hierarchy-level level-1">
-                    <div class="hierarchy-card">
-                        <div class="card-icon">🏛️</div>
-                        <h3>Instansi</h3>
-                        <p>Organisasi Induk</p>
-                        <span class="card-example">Contoh: YPI Al Azhar</span>
+        <!-- Sidebar Navigation -->
+        <aside class="hidden lg:block w-64 fixed h-[calc(100vh-6rem)] overflow-y-auto pr-4 border-r border-slate-200">
+            <nav class="space-y-1">
+                <p class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 mt-4">Application
+                    Overview</p>
+                <a href="#overview" @click="activeSection = 'overview'"
+                    :class="{ 'bg-blue-50 text-blue-700 border-l-4 border-blue-600': activeSection === 'overview' }"
+                    class="block px-3 py-2 text-sm font-medium text-slate-700 rounded-r-md hover:bg-slate-100 transition-colors">Overview</a>
+                <a href="#erd" @click="activeSection = 'erd'"
+                    :class="{ 'bg-blue-50 text-blue-700 border-l-4 border-blue-600': activeSection === 'erd' }"
+                    class="block px-3 py-2 text-sm font-medium text-slate-700 rounded-r-md hover:bg-slate-100 transition-colors">ERD
+                    & Database</a>
+                <a href="#roles" @click="activeSection = 'roles'"
+                    :class="{ 'bg-blue-50 text-blue-700 border-l-4 border-blue-600': activeSection === 'roles' }"
+                    class="block px-3 py-2 text-sm font-medium text-slate-700 rounded-r-md hover:bg-slate-100 transition-colors">User
+                    Roles</a>
+                <a href="#workflow" @click="activeSection = 'workflow'"
+                    :class="{ 'bg-blue-50 text-blue-700 border-l-4 border-blue-600': activeSection === 'workflow' }"
+                    class="block px-3 py-2 text-sm font-medium text-slate-700 rounded-r-md hover:bg-slate-100 transition-colors">Business
+                    Workflow</a>
+                <a href="#features" @click="activeSection = 'features'"
+                    :class="{ 'bg-blue-50 text-blue-700 border-l-4 border-blue-600': activeSection === 'features' }"
+                    class="block px-3 py-2 text-sm font-medium text-slate-700 rounded-r-md hover:bg-slate-100 transition-colors">Key
+                    Features</a>
+                <a href="#tech" @click="activeSection = 'tech'"
+                    :class="{ 'bg-blue-50 text-blue-700 border-l-4 border-blue-600': activeSection === 'tech' }"
+                    class="block px-3 py-2 text-sm font-medium text-slate-700 rounded-r-md hover:bg-slate-100 transition-colors">Tech
+                    Stack</a>
+
+                <p class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 mt-6"> Deployment
+                    Guide</p>
+                <a href="#intro" @click="activeSection = 'intro'"
+                    :class="{ 'bg-blue-50 text-blue-700 border-l-4 border-blue-600': activeSection === 'intro' }"
+                    class="block px-3 py-2 text-sm font-medium text-slate-700 rounded-r-md hover:bg-slate-100 transition-colors">Introduction</a>
+
+                <p class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 mt-6">Phase 1:
+                    Infrastructure</p>
+                <a href="#proxmox" @click="activeSection = 'proxmox'"
+                    :class="{ 'bg-blue-50 text-blue-700 border-l-4 border-blue-600': activeSection === 'proxmox' }"
+                    class="block px-3 py-2 text-sm font-medium text-slate-700 rounded-r-md hover:bg-slate-100 transition-colors">Proxmox
+                    LXC Setup</a>
+
+                <p class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 mt-6">Phase 2: Stack
+                    Installation</p>
+                <a href="#basics" @click="activeSection = 'basics'"
+                    :class="{ 'bg-blue-50 text-blue-700 border-l-4 border-blue-600': activeSection === 'basics' }"
+                    class="block px-3 py-2 text-sm font-medium text-slate-700 rounded-r-md hover:bg-slate-100 transition-colors">Basic
+                    Tools</a>
+                <a href="#lemp" @click="activeSection = 'lemp'"
+                    :class="{ 'bg-blue-50 text-blue-700 border-l-4 border-blue-600': activeSection === 'lemp' }"
+                    class="block px-3 py-2 text-sm font-medium text-slate-700 rounded-r-md hover:bg-slate-100 transition-colors">LEMP
+                    Stack</a>
+                <a href="#composer" @click="activeSection = 'composer'"
+                    :class="{ 'bg-blue-50 text-blue-700 border-l-4 border-blue-600': activeSection === 'composer' }"
+                    class="block px-3 py-2 text-sm font-medium text-slate-700 rounded-r-md hover:bg-slate-100 transition-colors">Composer</a>
+
+                <p class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 mt-6">Phase 3:
+                    Application</p>
+                <a href="#deploy" @click="activeSection = 'deploy'"
+                    :class="{ 'bg-blue-50 text-blue-700 border-l-4 border-blue-600': activeSection === 'deploy' }"
+                    class="block px-3 py-2 text-sm font-medium text-slate-700 rounded-r-md hover:bg-slate-100 transition-colors">Clone
+                    & Install</a>
+                <a href="#config" @click="activeSection = 'config'"
+                    :class="{ 'bg-blue-50 text-blue-700 border-l-4 border-blue-600': activeSection === 'config' }"
+                    class="block px-3 py-2 text-sm font-medium text-slate-700 rounded-r-md hover:bg-slate-100 transition-colors">Configuration</a>
+
+                <p class="px-3 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 mt-6">Phase 4: Server
+                    Config</p>
+                <a href="#nginx" @click="activeSection = 'nginx'"
+                    :class="{ 'bg-blue-50 text-blue-700 border-l-4 border-blue-600': activeSection === 'nginx' }"
+                    class="block px-3 py-2 text-sm font-medium text-slate-700 rounded-r-md hover:bg-slate-100 transition-colors">Nginx
+                    & SSL</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="lg:pl-72 w-full space-y-16">
+
+            <!-- Overview Section (Combined Hero & Hierarchy) -->
+            <section id="overview" class="scroll-mt-28" x-intersect="activeSection = 'overview'">
+                <div class="bg-indigo-900 rounded-2xl shadow-xl overflow-hidden mb-8 text-white relative">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-indigo-900 via-blue-900 to-slate-900 opacity-90">
+                    </div>
+                    <div class="relative p-10 text-center">
+                        <div
+                            class="inline-block bg-indigo-800 text-indigo-200 text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wide">
+                            Official Documentation</div>
+                        <h1 class="text-4xl md:text-5xl font-bold mb-4">Kas Kecil Imprest App <span
+                                class="text-indigo-400 font-light">v4.0</span></h1>
+                        <p class="text-indigo-200 text-lg max-w-2xl mx-auto leading-relaxed">Sistem pengelolaan kas
+                            kecil berbasis metode <strong>Imprest (Dana Tetap)</strong> dengan support multi-platform
+                            dan hierarki organisasi yang dinamis.</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 max-w-4xl mx-auto text-left">
+                            <div class="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/10">
+                                <div class="text-3xl font-bold mb-1">10+</div>
+                                <div class="text-indigo-300 text-sm font-medium uppercase">Database Tables</div>
+                            </div>
+                            <div class="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/10">
+                                <div class="text-3xl font-bold mb-1">2</div>
+                                <div class="text-indigo-300 text-sm font-medium uppercase">Primary Roles</div>
+                            </div>
+                            <div class="bg-white/10 backdrop-blur-sm p-4 rounded-xl border border-white/10">
+                                <div class="text-3xl font-bold mb-1">3</div>
+                                <div class="text-indigo-300 text-sm font-medium uppercase">Platforms (Web, iOS, Android)
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="hierarchy-connector"></div>
-                <div class="hierarchy-level level-2">
-                    <div class="hierarchy-card">
-                        <div class="card-icon">🏢</div>
-                        <h3>Cabang</h3>
-                        <p>Kantor Regional</p>
-                        <span class="card-example">Contoh: Jakarta, Bandung</span>
-                    </div>
-                    <div class="hierarchy-card">
-                        <div class="card-icon">🏢</div>
-                        <h3>Cabang</h3>
-                        <p>Kantor Regional</p>
-                        <span class="card-example">Contoh: Tangerang</span>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
+                    <h3 class="text-2xl font-bold text-slate-900 mb-6">Struktur Hierarki Organisasi</h3>
+                    <div class="flex flex-col items-center gap-6 py-4">
+                        <!-- Level 1 -->
+                        <div
+                            class="bg-slate-50 border-2 border-slate-200 p-4 rounded-xl text-center w-64 shadow-sm hover:border-blue-500 hover:shadow-md transition-all">
+                            <div class="text-3xl mb-2">🏛️</div>
+                            <h4 class="font-bold text-slate-900">Instansi</h4>
+                            <p class="text-sm text-slate-500">Organisasi Induk</p>
+                            <div class="text-xs text-slate-400 mt-1 italic">ex: YPI Al Azhar</div>
+                        </div>
+                        <div class="h-8 w-0.5 bg-slate-300"></div>
+                        <!-- Level 2 -->
+                        <div class="grid grid-cols-2 gap-8 w-full max-w-2xl">
+                            <div
+                                class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm relative hover:border-blue-400 transition-all">
+                                <div
+                                    class="absolute -top-3 left-1/2 -translate-x-1/2 w-3 h-3 bg-slate-300 rounded-full">
+                                </div>
+                                <div class="text-2xl mb-2">🏢</div>
+                                <h4 class="font-bold text-slate-800">Cabang</h4>
+                                <p class="text-xs text-slate-500">Regional Office</p>
+                            </div>
+                            <div
+                                class="bg-slate-50 border border-slate-200 p-4 rounded-xl text-center shadow-sm relative hover:border-blue-400 transition-all">
+                                <div
+                                    class="absolute -top-3 left-1/2 -translate-x-1/2 w-3 h-3 bg-slate-300 rounded-full">
+                                </div>
+                                <div class="text-2xl mb-2">🏢</div>
+                                <h4 class="font-bold text-slate-800">Cabang</h4>
+                                <p class="text-xs text-slate-500">Regional Office</p>
+                            </div>
+                        </div>
+                        <div class="h-8 w-0.5 bg-slate-300"></div>
+                        <!-- Level 3 -->
+                        <div class="grid grid-cols-4 gap-4 w-full">
+                            <div
+                                class="bg-white border border-slate-200 p-3 rounded-lg text-center text-sm shadow-sm hover:border-blue-300 hover:bg-blue-50">
+                                <div>📋</div>
+                                <div class="font-semibold text-slate-700">Unit Keuangan</div>
+                            </div>
+                            <div
+                                class="bg-white border border-slate-200 p-3 rounded-lg text-center text-sm shadow-sm hover:border-blue-300 hover:bg-blue-50">
+                                <div>📋</div>
+                                <div class="font-semibold text-slate-700">Unit SDM</div>
+                            </div>
+                            <div
+                                class="bg-white border border-slate-200 p-3 rounded-lg text-center text-sm shadow-sm hover:border-blue-300 hover:bg-blue-50">
+                                <div>📋</div>
+                                <div class="font-semibold text-slate-700">Unit IT</div>
+                            </div>
+                            <div
+                                class="bg-white border border-slate-200 p-3 rounded-lg text-center text-sm shadow-sm hover:border-blue-300 hover:bg-blue-50">
+                                <div>📋</div>
+                                <div class="font-semibold text-slate-700">Unit Lainnya</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="hierarchy-connector"></div>
-                <div class="hierarchy-level level-3">
-                    <div class="hierarchy-card small">
-                        <div class="card-icon">📋</div>
-                        <h3>Unit</h3>
-                        <p>Unit Keuangan</p>
-                    </div>
-                    <div class="hierarchy-card small">
-                        <div class="card-icon">📋</div>
-                        <h3>Unit</h3>
-                        <p>Unit SDM</p>
-                    </div>
-                    <div class="hierarchy-card small">
-                        <div class="card-icon">📋</div>
-                        <h3>Unit</h3>
-                        <p>Unit IT</p>
-                    </div>
-                    <div class="hierarchy-card small">
-                        <div class="card-icon">📋</div>
-                        <h3>Unit</h3>
-                        <p>Unit Marketing</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <!-- ERD Section -->
-    <section id="erd" class="section section-dark">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-badge">Database</span>
-                <h2 class="section-title">Entity Relationship Diagram</h2>
-                <p class="section-subtitle">Struktur database lengkap dengan 10+ tabel dan relasinya</p>
-            </div>
-
-            <div class="erd-container">
-                <div class="erd-diagram" id="erdDiagram">
-                    <pre class="mermaid">
-%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#6366f1', 'primaryTextColor': '#f9fafb', 'lineColor': '#818cf8'}}}%%
+            <!-- ERD Section -->
+            <section id="erd" class="scroll-mt-28" x-intersect="activeSection = 'erd'">
+                <div class="bg-slate-900 rounded-2xl shadow-xl overflow-hidden border border-slate-700">
+                    <div class="p-6 border-b border-slate-700 flex justify-between items-center bg-slate-800/50">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Entity Relationship Diagram (ERD)</h3>
+                            <p class="text-slate-400 text-sm">Database Schema & Relationships</p>
+                        </div>
+                        <span class="bg-slate-700 text-slate-300 text-xs py-1 px-3 rounded-full">PostgreSQL</span>
+                    </div>
+                    <div class="p-8 overflow-x-auto bg-[#0d1117]">
+                        <pre class="mermaid text-center">
+%%{init: {'theme': 'dark', 'themeVariables': { 'primaryColor': '#6366f1', 'primaryTextColor': '#f9fafb', 'lineColor': '#818cf8', 'mainBkg': '#1e293b'}}}%%
 flowchart LR
     subgraph ORG["🏛️ ORGANISASI"]
         direction TB
-        INSTANSI["<b>INSTANSI</b><br/>id, nama_instansi<br/>alamat, telepon, email"]
-        CABANG["<b>CABANG</b><br/>id, instansi_id<br/>kode_cabang, nama_cabang<br/>plafon_kas, is_active"]
-        UNIT["<b>UNIT</b><br/>id, cabang_id<br/>kode_unit, nama_unit<br/>plafon_kas, is_active"]
+        INSTANSI["<b>INSTANSI</b><br/>id, nama_instansi<br/>alamat, telepon"]
+        CABANG["<b>CABANG</b><br/>id, instansi_id<br/>kode, nama_cabang"]
+        UNIT["<b>UNIT</b><br/>id, cabang_id<br/>kode, nama_unit<br/>plafon_kas"]
     end
 
     subgraph AUTH["🔐 AUTENTIKASI"]
         direction TB
-        ROLES["<b>ROLES</b><br/>id, name<br/>display_name, description"]
-        USERS["<b>USERS</b><br/>id, nama, email<br/>role_id, cabang_id, unit_id<br/>is_active"]
-    end
-
-    subgraph AKUN["📊 AKUNTANSI"]
-        direction TB
-        AKUN_AAS["<b>AKUN_AAS</b><br/>id, unit_id<br/>kode_akun, nama_akun<br/>jenis (debet/kredit)"]
-        AKUN_MA["<b>AKUN_MATANGGARAN</b><br/>id, akun_aas_id<br/>kode_matanggaran, saldo"]
+        ROLES["<b>ROLES</b><br/>id, name"]
+        USERS["<b>USERS</b><br/>id, nama, email<br/>role_id, unit_id"]
     end
 
     subgraph TRX["💵 TRANSAKSI"]
         direction TB
-        TRANSAKSI["<b>TRANSAKSI</b><br/>id, cabang_id, unit_id<br/>tanggal, kategori, jumlah<br/>user_id, lampiran"]
-        TRX_SHADOW["<b>TRANSAKSI_SHADOW</b><br/>id, cabang_id, unit_id<br/>status, approved_by<br/>catatan_approval"]
+        TRANSAKSI["<b>TRANSAKSI</b><br/>id, unit_id<br/>tanggal, jumlah<br/>status"]
+        TRX_SHADOW["<b>TRX_SHADOW</b><br/>id, unit_id<br/>status_approval"]
+    end
+    
+    subgraph AKUN["📊 AKUNTANSI"]
+        AKUN_AAS["<b>AKUN_AAS</b>"]
+        AKUN_MA["<b>MATA_ANGGARAN</b>"]
     end
 
     INSTANSI --> CABANG
     CABANG --> UNIT
     UNIT --> USERS
     ROLES --> USERS
-    UNIT --> AKUN_AAS
-    AKUN_AAS --> AKUN_MA
     UNIT --> TRANSAKSI
     USERS --> TRANSAKSI
-    UNIT --> TRX_SHADOW
-    USERS --> TRX_SHADOW
-                    </pre>
+    UNIT --> AKUN_AAS
+    AKUN_AAS --> AKUN_MA
+                        </pre>
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <div class="tables-grid">
-                <div class="table-card">
-                    <div class="table-icon">🏛️</div>
-                    <h4>instansi</h4>
-                    <p>Organisasi induk dengan informasi kepala instansi</p>
-                </div>
-                <div class="table-card">
-                    <div class="table-icon">🏢</div>
-                    <h4>cabang</h4>
-                    <p>Kantor cabang dengan plafon kas dan status aktif</p>
-                </div>
-                <div class="table-card">
-                    <div class="table-icon">📋</div>
-                    <h4>unit</h4>
-                    <p>Unit kerja dengan plafon kas tersendiri</p>
-                </div>
-                <div class="table-card">
-                    <div class="table-icon">👥</div>
-                    <h4>users</h4>
-                    <p>Pengguna dengan role, cabang, dan unit assignment</p>
-                </div>
-                <div class="table-card">
-                    <div class="table-icon">🔐</div>
-                    <h4>roles</h4>
-                    <p>Definisi role dan hak akses</p>
-                </div>
-                <div class="table-card">
-                    <div class="table-icon">💵</div>
-                    <h4>transaksi</h4>
-                    <p>Transaksi kas kecil yang sudah final</p>
-                </div>
-                <div class="table-card">
-                    <div class="table-icon">📝</div>
-                    <h4>transaksi_shadow</h4>
-                    <p>Draft transaksi dengan sistem approval</p>
-                </div>
-                <div class="table-card">
-                    <div class="table-icon">📊</div>
-                    <h4>akun_aas</h4>
-                    <p>Chart of Account (Debet/Kredit)</p>
-                </div>
-                <div class="table-card">
-                    <div class="table-icon">💰</div>
-                    <h4>akun_matanggaran</h4>
-                    <p>Kode mata anggaran dengan saldo</p>
-                </div>
-            </div>
-        </div>
-    </section>
+            <!-- Roles Section -->
+            <section id="roles" class="scroll-mt-28" x-intersect="activeSection = 'roles'">
+                <h3 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                    <span>🔐</span> Role-Based Access Control
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Super Admin -->
+                    <div
+                        class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 relative overflow-hidden group hover:border-blue-400 transition-colors">
+                        <div
+                            class="absolute top-0 right-0 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                            Highest Privilege</div>
+                        <div
+                            class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+                            🔑</div>
+                        <h4 class="text-xl font-bold text-slate-900 mb-2">Super Admin</h4>
+                        <p class="text-slate-600 mb-4 text-sm">Full access to system configuration, organizational
+                            structure, and global financial oversight.</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center gap-2 text-sm text-slate-700">
+                                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Manage Instansi, Cabang & Unit
+                            </li>
+                            <li class="flex items-center gap-2 text-sm text-slate-700">
+                                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Set Plafon Kas (Kas Formation)
+                            </li>
+                            <li class="flex items-center gap-2 text-sm text-slate-700">
+                                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Consolidated Reporting
+                            </li>
+                        </ul>
+                    </div>
 
-    <!-- Roles Section -->
-    <section id="roles" class="section">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-badge">Access Control</span>
-                <h2 class="section-title">Role-Based Access Control</h2>
-                <p class="section-subtitle">Hierarki peran pengguna dan hak akses masing-masing</p>
-            </div>
+                    <!-- Admin Unit -->
+                    <div
+                        class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 relative overflow-hidden group hover:border-emerald-400 transition-colors">
+                        <div
+                            class="absolute top-0 right-0 bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                            Operational</div>
+                        <div
+                            class="w-12 h-12 bg-emerald-100 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+                            📋</div>
+                        <h4 class="text-xl font-bold text-slate-900 mb-2">Admin Unit</h4>
+                        <p class="text-slate-600 mb-4 text-sm">Operational access limited to their specific Unit.
+                            Manages daily transactions and budget items.</p>
+                        <ul class="space-y-2">
+                            <li class="flex items-center gap-2 text-sm text-slate-700">
+                                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Manage Akun AAS & Mata Anggaran
+                            </li>
+                            <li class="flex items-center gap-2 text-sm text-slate-700">
+                                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Input Transactions (Imprest)
+                            </li>
+                            <li class="flex items-center gap-2 text-sm text-slate-700">
+                                <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Print Unit Reports
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
 
-            <div class="roles-grid roles-grid-2">
-                <div class="role-card role-super">
-                    <div class="role-badge">Tertinggi</div>
-                    <div class="role-icon">🔑</div>
-                    <h3>Super Admin</h3>
-                    <p class="role-desc">Akses penuh ke semua data dan konfigurasi sistem</p>
-                    <ul class="role-permissions">
-                        <li>✅ Kelola Semua Instansi, Cabang dan Unit</li>
-                        <li>✅ Atur Plafon Kas Per Unit sebagai Pembentukan Kas</li>
-                        <li>✅ Kelola Semua User</li>
-                        <li>✅ Lihat Semua Transaksi Unit</li>
-                        <li>✅ Akses Laporan Konsolidasi & Rekap</li>
-                    </ul>
+            <!-- Workflow Section (Tabs) -->
+            <section id="workflow" class="scroll-mt-28" x-intersect="activeSection = 'workflow'"
+                x-data="{ tab: 'superadmin' }">
+                <h3 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+                    <span>🔄</span> Business Workflow
+                </h3>
+
+                <!-- Tab Headers -->
+                <div class="flex gap-2 p-1 bg-slate-100 rounded-lg mb-8 w-fit">
+                    <button @click="tab = 'superadmin'"
+                        :class="{ 'bg-white text-blue-600 shadow-sm': tab === 'superadmin', 'text-slate-500 hover:text-slate-700': tab !== 'superadmin' }"
+                        class="px-6 py-2.5 rounded-md text-sm font-semibold transition-all flex items-center gap-2">
+                        <span>🔑</span> Super Admin
+                    </button>
+                    <button @click="tab = 'adminunit'"
+                        :class="{ 'bg-white text-emerald-600 shadow-sm': tab === 'adminunit', 'text-slate-500 hover:text-slate-700': tab !== 'adminunit' }"
+                        class="px-6 py-2.5 rounded-md text-sm font-semibold transition-all flex items-center gap-2">
+                        <span>📋</span> Admin Unit
+                    </button>
                 </div>
 
-                <div class="role-card role-unit">
-                    <div class="role-badge">Level 2</div>
-                    <div class="role-icon">📋</div>
-                    <h3>Admin Unit</h3>
-                    <p class="role-desc">Input transaksi untuk unit sendiri sesuai plafon kas</p>
-                    <ul class="role-permissions">
-                        <li>✅ Kelola Akun AAS & Mata Anggaran</li>
-                        <li>✅ Input Transaksi Pengeluaran & Pengisian</li>
-                        <li>✅ Upload Bukti Transaksi</li>
-                        <li>✅ Akses Laporan</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
+                <!-- Tab Content: Super Admin -->
+                <div x-show="tab === 'superadmin'" x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 translate-y-2"
+                    x-transition:enter-end="opacity-100 translate-y-0" class="space-y-8">
 
-    <!-- Workflow Section -->
-    <section id="workflow" class="section section-gradient">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-badge">Business Flow</span>
-                <h2 class="section-title">Workflow Bisnis</h2>
-                <p class="section-subtitle">Alur kerja aplikasi mengikuti metode Imprest (Dana Tetap)</p>
-            </div>
-
-            <div class="workflow-tabs">
-                <button class="tab-btn active" data-tab="superadmin">🔑 Super Admin</button>
-                <button class="tab-btn" data-tab="adminunit">📋 Admin Unit</button>
-            </div>
-
-            <div class="workflow-content">
-                <!-- Super Admin Tab -->
-                <div class="tab-panel active" id="superadmin">
-                    <h3 class="workflow-subtitle">1. Setup Organisasi</h3>
-                    <div class="workflow-flow">
-                        <div class="flow-step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <h4>🔑 Super Admin</h4>
-                                <p>Login ke sistem</p>
+                    <!-- Flow 1 -->
+                    <div class="relative pl-8 border-l-2 border-blue-200 space-y-8">
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[39px] bg-blue-100 p-1.5 rounded-full border-4 border-white shadow-sm">
+                                <div class="w-3 h-3 bg-blue-600 rounded-full"></div>
+                            </div>
+                            <h4 class="font-bold text-slate-900 mb-2">1. Setup Organisasi</h4>
+                            <div class="flex flex-wrap gap-4 items-center text-sm text-slate-600">
+                                <span class="bg-slate-50 px-3 py-1 rounded border border-slate-200">Login</span>
+                                <span class="text-slate-300">➜</span>
+                                <span class="bg-slate-50 px-3 py-1 rounded border border-slate-200">Buat Instansi</span>
+                                <span class="text-slate-300">➜</span>
+                                <span class="bg-slate-50 px-3 py-1 rounded border border-slate-200">Buat Cabang</span>
+                                <span class="text-slate-300">➜</span>
+                                <span
+                                    class="bg-green-50 text-green-700 px-3 py-1 rounded border border-green-200 font-medium">Buat
+                                    Unit + Plafon Kas</span>
                             </div>
                         </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <h4>🏛️ Buat Instansi</h4>
-                                <p>Data organisasi induk</p>
+
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[39px] bg-blue-100 p-1.5 rounded-full border-4 border-white shadow-sm">
+                                <div class="w-3 h-3 bg-blue-600 rounded-full"></div>
                             </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <h4>🏢 Buat Cabang</h4>
-                                <p>Kantor regional + plafon</p>
-                            </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step success">
-                            <div class="step-number">4</div>
-                            <div class="step-content">
-                                <h4>📋 Buat Unit</h4>
-                                <p>Unit kerja + plafon kas</p>
+                            <h4 class="font-bold text-slate-900 mb-2">2. Manajemen Pengguna</h4>
+                            <div class="flex flex-wrap gap-4 items-center text-sm text-slate-600">
+                                <span class="bg-slate-50 px-3 py-1 rounded border border-slate-200">Add User</span>
+                                <span class="text-slate-300">➜</span>
+                                <span class="bg-slate-50 px-3 py-1 rounded border border-slate-200">Assign Role</span>
+                                <span class="text-slate-300">➜</span>
+                                <span
+                                    class="bg-green-50 text-green-700 px-3 py-1 rounded border border-green-200 font-medium">Assign
+                                    Unit</span>
                             </div>
                         </div>
                     </div>
 
-                    <h3 class="workflow-subtitle">2. Manajemen Pengguna</h3>
-                    <div class="workflow-flow">
-                        <div class="flow-step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <h4>🔑 Super Admin</h4>
-                                <p>Menu Pengguna</p>
+                    <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 flex gap-4 items-start">
+                        <div class="text-xl">💡</div>
+                        <div>
+                            <h5 class="font-bold text-blue-900 text-sm">Konsep Pembentukan Kas</h5>
+                            <p class="text-blue-700 text-sm mt-1">Super Admin mengatur <strong>Plafon Kas</strong> per
+                                unit. Ini menjadi dasar saldo awal (Modal Kerja) untuk setiap unit dalam metode Imprest.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Tab Content: Admin Unit -->
+                <div x-show="tab === 'adminunit'" x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 translate-y-2"
+                    x-transition:enter-end="opacity-100 translate-y-0" class="space-y-8" style="display: none;">
+
+                    <!-- Flow 1 -->
+                    <div class="relative pl-8 border-l-2 border-emerald-200 space-y-8">
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[39px] bg-emerald-100 p-1.5 rounded-full border-4 border-white shadow-sm">
+                                <div class="w-3 h-3 bg-emerald-600 rounded-full"></div>
+                            </div>
+                            <h4 class="font-bold text-slate-900 mb-2">1. Setup Master Data</h4>
+                            <div class="flex flex-wrap gap-4 items-center text-sm text-slate-600">
+                                <span class="bg-slate-50 px-3 py-1 rounded border border-slate-200">Kelola Akun AAS
+                                    (Debet/Kredit)</span>
+                                <span class="text-slate-300">➜</span>
+                                <span
+                                    class="bg-green-50 text-green-700 px-3 py-1 rounded border border-green-200 font-medium">Kelola
+                                    Mata Anggaran + Saldo</span>
                             </div>
                         </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <h4>➕ Tambah User</h4>
-                                <p>Input nama, email, role</p>
+
+                        <div class="relative">
+                            <div
+                                class="absolute -left-[39px] bg-emerald-100 p-1.5 rounded-full border-4 border-white shadow-sm">
+                                <div class="w-3 h-3 bg-emerald-600 rounded-full"></div>
                             </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <h4>🏢 Pilih Unit</h4>
-                                <p>Assign ke cabang/unit</p>
-                            </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step success">
-                            <div class="step-number">✓</div>
-                            <div class="step-content">
-                                <h4>✅ User Aktif</h4>
-                                <p>Siap digunakan</p>
+                            <h4 class="font-bold text-slate-900 mb-2">2. Transaksi (Pengeluaran)</h4>
+                            <div class="flex flex-wrap gap-4 items-center text-sm text-slate-600">
+                                <span class="bg-slate-50 px-3 py-1 rounded border border-slate-200">Input
+                                    Transaksi</span>
+                                <span class="text-slate-300">➜</span>
+                                <span class="bg-slate-50 px-3 py-1 rounded border border-slate-200">Pilih Mata
+                                    Anggaran</span>
+                                <span class="text-slate-300">➜</span>
+                                <span class="bg-slate-50 px-3 py-1 rounded border border-slate-200">Upload Bukti</span>
+                                <span class="text-slate-300">➜</span>
+                                <span
+                                    class="bg-green-50 text-green-700 px-3 py-1 rounded border border-green-200 font-medium">Saldo
+                                    Berkurang</span>
                             </div>
                         </div>
                     </div>
 
-                    <h3 class="workflow-subtitle">3. Cetak Laporan</h3>
-                    <div class="workflow-flow">
-                        <div class="flow-step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <h4>🔑 Super Admin</h4>
-                                <p>Menu Cetak Laporan</p>
-                            </div>
+                    <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-4 flex gap-4 items-start">
+                        <div class="text-xl">💡</div>
+                        <div>
+                            <h5 class="font-bold text-emerald-900 text-sm">Metode Imprest</h5>
+                            <p class="text-emerald-700 text-sm mt-1">Setiap transaksi pengeluaran akan langsung
+                                mengurangi saldo Mata Anggaran terkait. Pengisian kas akan mengembalikan saldo ke
+                                Plafon.</p>
                         </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step highlight">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <h4>� Pilih Jenis Laporan</h4>
-                                <div class="kategori-badges">
-                                    <span class="badge badge-blue">Akun AAS</span>
-                                    <span class="badge badge-green">Mata Anggaran</span>
-                                    <span class="badge badge-red">Transaksi</span>
-                                    <span class="badge badge-purple">Plafon per Unit</span>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- Features Grid -->
+            <section id="features" class="scroll-mt-28" x-intersect="activeSection = 'features'">
+                <h3 class="text-2xl font-bold text-slate-900 mb-6">Key Features</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div
+                        class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-3xl mb-3">🏢</div>
+                        <h4 class="font-bold text-slate-900">Organization Mgmt</h4>
+                        <p class="text-sm text-slate-600 mt-2">Full CRUD for Instansi, Cabang, and Units with hierarchy.
+                        </p>
+                    </div>
+                    <div
+                        class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-3xl mb-3">💰</div>
+                        <h4 class="font-bold text-slate-900">Imprest System</h4>
+                        <p class="text-sm text-slate-600 mt-2">Automated saldo tracking with fixed funds (Dana Tetap)
+                            logic.</p>
+                    </div>
+                    <div
+                        class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-3xl mb-3">⚖️</div>
+                        <h4 class="font-bold text-slate-900">Draft & Approval</h4>
+                        <p class="text-sm text-slate-600 mt-2">Shadow transactions for reviewing before final posting.
+                        </p>
+                    </div>
+                    <div
+                        class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-3xl mb-3">🧾</div>
+                        <h4 class="font-bold text-slate-900">Attachments</h4>
+                        <p class="text-sm text-slate-600 mt-2">Upload multiple proofs/receipts for every transaction.
+                        </p>
+                    </div>
+                    <div
+                        class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-3xl mb-3">📱</div>
+                        <h4 class="font-bold text-slate-900">Mobile Support</h4>
+                        <p class="text-sm text-slate-600 mt-2">Fully reactive API supporting both Web and Mobile apps.
+                        </p>
+                    </div>
+                    <div
+                        class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="text-3xl mb-3">🌍</div>
+                        <h4 class="font-bold text-slate-900">Multi-language</h4>
+                        <p class="text-sm text-slate-600 mt-2">Indonesia, English, and Arabic (RTL) support built-in.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tech Stack -->
+            <section id="tech" class="scroll-mt-28" x-intersect="activeSection = 'tech'">
+                <div class="bg-slate-900 text-white rounded-2xl p-8 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-32 bg-blue-600 rounded-full blur-3xl opacity-20 -mr-16 -mt-16">
+                    </div>
+                    <h3 class="text-2xl font-bold mb-6 relative z-10">Technology Stack</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 relative z-10">
+                        <!-- Tech Item -->
+                        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700 text-center">
+                            <div class="text-3xl mb-2">⚙️</div>
+                            <div class="font-bold text-blue-200">Laravel 12</div>
+                            <div class="text-xs text-slate-400">Backend API</div>
+                        </div>
+                        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700 text-center">
+                            <div class="text-3xl mb-2">🌐</div>
+                            <div class="font-bold text-blue-200">React + Vite</div>
+                            <div class="text-xs text-slate-400">Web Dashboard</div>
+                        </div>
+                        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700 text-center">
+                            <div class="text-3xl mb-2">📱</div>
+                            <div class="font-bold text-blue-200">React Native</div>
+                            <div class="text-xs text-slate-400">Mobile (Expo)</div>
+                        </div>
+                        <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700 text-center">
+                            <div class="text-3xl mb-2">🗃️</div>
+                            <div class="font-bold text-blue-200">PostgreSQL</div>
+                            <div class="text-xs text-slate-400">Database</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="border-slate-200 my-10" />
+
+            <!-- Intro Section (Original) -->
+            <section id="intro" class="scroll-mt-28" x-intersect="activeSection = 'intro'">
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-4">Manual Deployment Kaskecil</h2>
+                    <p class="text-lg text-slate-600 leading-relaxed">
+                        Panduan lengkap ini mencakup seluruh proses deployment aplikasi Kaskecil pada server Proxmox
+                        menggunakan LXC Container dengan OS Ubuntu 24.04.
+                    </p>
+                    <div class="mt-6 flex gap-4">
+                        <div class="bg-blue-50 text-blue-700 px-4 py-3 rounded-lg text-sm font-medium w-full sm:w-auto">
+                            <strong>Target Server:</strong> LXC CT 105
+                        </div>
+                        <div
+                            class="bg-green-50 text-green-700 px-4 py-3 rounded-lg text-sm font-medium w-full sm:w-auto">
+                            <strong>IP Address:</strong> 192.168.13.75
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Phase 1: Proxmox -->
+            <section id="proxmox" class="scroll-mt-28" x-intersect="activeSection = 'proxmox'">
+                <h3 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                    <span
+                        class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-sm">1</span>
+                    Proxmox LXC Setup
+                </h3>
+
+                <div class="space-y-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="p-6 border-b border-slate-100 bg-slate-50/50">
+                            <h4 class="font-semibold text-slate-800">1. Login & Template</h4>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <ul class="list-disc list-inside space-y-2 text-slate-600">
+                                <li>Akses Proxmox: <a href="https://192.168.13.69:8006" target="_blank"
+                                        class="text-blue-600 hover:underline">https://192.168.13.69:8006</a></li>
+                                <li>Download Template: <strong>ubuntu-24.04-standard</strong> via <em>local (alazhar) ->
+                                        CT Templates</em></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="p-6 border-b border-slate-100 bg-slate-50/50">
+                            <h4 class="font-semibold text-slate-800">2. Container Configuration</h4>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                <div class="bg-slate-50 p-3 rounded border border-slate-100">
+                                    <div class="text-slate-500 text-xs uppercase tracking-wide mb-1">Hostname</div>
+                                    <div class="font-mono font-medium">kaskecil-server</div>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded border border-slate-100">
+                                    <div class="text-slate-500 text-xs uppercase tracking-wide mb-1">Resources</div>
+                                    <div class="font-mono font-medium">2 Cores / 2GB RAM / 20GB HDD</div>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded border border-slate-100">
+                                    <div class="text-slate-500 text-xs uppercase tracking-wide mb-1">Network (Static)
+                                    </div>
+                                    <div class="font-mono font-medium text-green-600">IP: 192.168.13.75/24</div>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded border border-slate-100">
+                                    <div class="text-slate-500 text-xs uppercase tracking-wide mb-1">Gateway</div>
+                                    <div class="font-mono font-medium">192.168.13.1</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <h4>� Filter Data</h4>
-                                <p>Unit, Cabang, Periode</p>
-                            </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step success">
-                            <div class="step-number">✓</div>
-                            <div class="step-content">
-                                <h4>�️ Cetak/Ekspor</h4>
-                                <p>PDF/Excel</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h3 class="workflow-subtitle">4. Activity Log & Backup</h3>
-                    <div class="workflow-flow">
-                        <div class="flow-step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <h4>🔑 Super Admin</h4>
-                                <p>Menu Settings</p>
-                            </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step highlight">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <h4>📜 Activity Log</h4>
-                                <p>Riwayat aktivitas user</p>
-                            </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step highlight">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <h4>💾 Backup Data</h4>
-                                <p>Unduh backup database</p>
-                            </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step success">
-                            <div class="step-number">✓</div>
-                            <div class="step-content">
-                                <h4>✅ Selesai</h4>
-                                <p>Data aman</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="info-box">
-                        <div class="info-icon">💡</div>
-                        <div class="info-content">
-                            <strong>Pembentukan Kas:</strong>
-                            <p>Super Admin mengatur plafon kas per unit sebagai <strong>Pembentukan Kas Awal</strong>.
-                                Ini menjadi dasar saldo kas kecil untuk setiap unit.</p>
-                        </div>
                     </div>
                 </div>
+            </section>
 
-                <!-- Admin Unit Tab -->
-                <div class="tab-panel" id="adminunit">
-                    <h3 class="workflow-subtitle">1. Input Data Master</h3>
-                    <div class="workflow-flow">
-                        <div class="flow-step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <h4>📋 Admin Unit</h4>
-                                <p>Login ke sistem</p>
+            <!-- Phase 2: Stack -->
+            <section id="basics" class="scroll-mt-28" x-intersect="activeSection = 'basics'">
+                <h3 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                    <span
+                        class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-sm">2</span>
+                    Install Software Stack
+                </h3>
+
+                <!-- Snippet: Update -->
+                <div class="bg-slate-900 rounded-xl overflow-hidden shadow-lg mb-6">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-800 border-b border-slate-700">
+                        <span class="text-xs text-slate-400 font-mono">Terminal (Root)</span>
+                        <button class="text-xs text-blue-400 hover:text-blue-300"
+                            onclick="copyToClipboard(this)">Copy</button>
+                    </div>
+                    <pre class="p-4 text-sm text-slate-300 overflow-x-auto"><code class="language-bash">apt update && apt upgrade -y
+apt install -y curl git unzip nano zip</code></pre>
+                </div>
+            </section>
+
+            <section id="lemp" class="scroll-mt-28" x-intersect="activeSection = 'lemp'">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 mb-6">
+                    <div class="p-6 border-b border-slate-100">
+                        <h4 class="text-lg font-bold">Install Nginx, PHP 8.2 & PostgreSQL</h4>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        <div class="bg-slate-900 rounded-lg overflow-hidden">
+                            <div
+                                class="flex items-center justify-between px-4 py-2 bg-slate-800 border-b border-slate-700">
+                                <span class="text-xs text-slate-400">Install Commands</span>
+                                <button class="text-xs text-blue-400 hover:text-blue-300"
+                                    onclick="copyToClipboard(this)">Copy</button>
                             </div>
+                            <pre class="p-4 text-sm text-slate-300 overflow-x-auto"><code># 1. Nginx
+apt install -y nginx && systemctl enable nginx
+
+# 2. PHP 8.2 (Add PPA first)
+apt install -y software-properties-common
+add-apt-repository ppa:ondrej/php -y && apt update
+apt install -y php8.2-fpm php8.2-cli php8.2-common php8.2-pgsql \
+php8.2-zip php8.2-gd php8.2-mbstring php8.2-curl php8.2-xml php8.2-bcmath
+
+# 3. PostgreSQL
+apt install -y postgresql postgresql-contrib
+systemctl start postgresql</code></pre>
                         </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <h4>📊 Kelola Akun AAS</h4>
-                                <p>Buat akun debet/kredit</p>
-                            </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step success">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <h4>💰 Kelola Mata Anggaran</h4>
-                                <p>Set kode & saldo anggaran</p>
+
+                        <div class="bg-amber-50 border-l-4 border-amber-500 p-4">
+                            <div class="flex">
+                                <div class="ml-3">
+                                    <p class="text-sm text-amber-700 font-bold">
+                                        Setup Database Manual
+                                    </p>
+                                    <p class="text-sm text-amber-600 mt-1">
+                                        Jangan lupa membuat database dan user:
+                                    </p>
+                                    <code
+                                        class="block mt-2 bg-white px-2 py-1 rounded border border-amber-200 text-xs font-mono text-slate-600">
+                                        sudo -u postgres psql<br>
+                                        CREATE DATABASE kaskecil;<br>
+                                        CREATE USER kaskecil WITH PASSWORD 'password_rahasia';<br>
+                                        GRANT ALL PRIVILEGES ON DATABASE kaskecil TO kaskecil;<br>
+                                        \q
+                                    </code>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </section>
 
-                    <h3 class="workflow-subtitle">2. Transaksi Pengeluaran Harian</h3>
-                    <div class="workflow-flow">
-                        <div class="flow-step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <h4>📋 Admin Unit</h4>
-                                <p>Menu Transaksi</p>
-                            </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <h4>📝 Input Transaksi</h4>
-                                <p>Pilih Pengeluaran Kas</p>
-                            </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step highlight">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <h4>📊 Pilih Mata Anggaran</h4>
-                                <p>Kategori pengeluaran</p>
-                            </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step">
-                            <div class="step-number">4</div>
-                            <div class="step-content">
-                                <h4>💵 Input Nominal</h4>
-                                <p>Jumlah pengeluaran</p>
-                            </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step">
-                            <div class="step-number">5</div>
-                            <div class="step-content">
-                                <h4>📎 Upload Lampiran</h4>
-                                <p>(Optional) Bukti transaksi</p>
-                            </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step success">
-                            <div class="step-number">✓</div>
-                            <div class="step-content">
-                                <h4>✅ Tersimpan</h4>
-                                <p>Saldo berkurang</p>
-                            </div>
-                        </div>
+            <section id="composer" class="scroll-mt-28" x-intersect="activeSection = 'composer'">
+                <div class="bg-slate-900 rounded-xl overflow-hidden shadow-lg">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-800 border-b border-slate-700">
+                        <span class="text-xs text-slate-400 font-mono">Install Composer</span>
+                        <button class="text-xs text-blue-400 hover:text-blue-300"
+                            onclick="copyToClipboard(this)">Copy</button>
                     </div>
+                    <pre class="p-4 text-sm text-slate-300 overflow-x-auto"><code>curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/local/bin/composer</code></pre>
+                </div>
+            </section>
 
-                    <h3 class="workflow-subtitle">3. Transaksi Pengisian Kas</h3>
-                    <div class="workflow-flow">
-                        <div class="flow-step">
-                            <div class="step-number">1</div>
-                            <div class="step-content">
-                                <h4>📋 Admin Unit</h4>
-                                <p>Menu Transaksi</p>
-                            </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step">
-                            <div class="step-number">2</div>
-                            <div class="step-content">
-                                <h4>📝 Input Transaksi</h4>
-                                <p>Pilih Pengisian Kas</p>
-                            </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step highlight">
-                            <div class="step-number">3</div>
-                            <div class="step-content">
-                                <h4>📊 Pilih Mata Anggaran</h4>
-                                <p>Kategori pengisian</p>
-                            </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step">
-                            <div class="step-number">4</div>
-                            <div class="step-content">
-                                <h4>📝 Input Rincian</h4>
-                                <p>Detail pengisian</p>
-                            </div>
-                        </div>
-                        <div class="flow-arrow">→</div>
-                        <div class="flow-step success">
-                            <div class="step-number">✓</div>
-                            <div class="step-content">
-                                <h4>✅ Tersimpan</h4>
-                                <p>Saldo bertambah</p>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Phase 3: Deployment -->
+            <section id="deploy" class="scroll-mt-28" x-intersect="activeSection = 'deploy'">
+                <h3 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                    <span
+                        class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-sm">3</span>
+                    Deploy Application
+                </h3>
 
-                    <div class="info-box">
-                        <div class="info-icon">💡</div>
-                        <div class="info-content">
-                            <strong>Metode Imprest (Dana Tetap):</strong>
-                            <p>Setiap pengeluaran mengurangi saldo kas. Pengisian kas mengembalikan saldo ke plafon
-                                awal, memudahkan kontrol dan audit keuangan.</p>
+                <div class="space-y-4">
+                    <p class="text-slate-600">Clone repository ke folder <code>/var/www</code>.</p>
+                    <div class="bg-slate-900 rounded-xl overflow-hidden shadow-lg">
+                        <div class="flex items-center justify-between px-4 py-2 bg-slate-800 border-b border-slate-700">
+                            <span class="text-xs text-slate-400 font-mono">Git Clone & Install</span>
+                            <button class="text-xs text-blue-400 hover:text-blue-300"
+                                onclick="copyToClipboard(this)">Copy</button>
                         </div>
+                        <pre class="p-4 text-sm text-slate-300 overflow-x-auto"><code>cd /var/www
+git clone https://YOUR_TOKEN@github.com/donarazhar/kaskecil-mobileAPP-version.git kaskecil
+cd kaskecil
+
+# Copy ENV
+cp .env.example .env
+
+# Install Dependencies
+composer install --optimize-autoloader --no-dev</code></pre>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
+            </section>
 
-    <!-- Features Section -->
-    <section id="features" class="section">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-badge">Features</span>
-                <h2 class="section-title">Core Features</h2>
-                <p class="section-subtitle">Fitur-fitur utama yang tersedia dalam aplikasi</p>
-            </div>
-
-            <div class="features-grid">
-                <div class="feature-category">
-                    <div class="category-header">
-                        <span class="category-icon">🏢</span>
-                        <h3>Manajemen Organisasi</h3>
+            <section id="config" class="scroll-mt-28" x-intersect="activeSection = 'config'">
+                <h4 class="text-lg font-bold mb-4">Laravel Configuration</h4>
+                <div class="bg-slate-900 rounded-xl overflow-hidden shadow-lg mb-6">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-800 border-b border-slate-700">
+                        <span class="text-xs text-slate-400 font-mono">Artisan Commands</span>
+                        <button class="text-xs text-blue-400 hover:text-blue-300"
+                            onclick="copyToClipboard(this)">Copy</button>
                     </div>
-                    <ul class="feature-list">
-                        <li>CRUD Instansi dengan info kepala</li>
-                        <li>CRUD Cabang dengan kode unik & plafon</li>
-                        <li>CRUD Unit kerja per cabang</li>
-                        <li>Manajemen User dengan role-based access</li>
-                    </ul>
-                </div>
+                    <pre class="p-4 text-sm text-slate-300 overflow-x-auto"><code># 1. Key & Migrations
+php artisan key:generate
+php artisan migrate --force --seed
 
-                <div class="feature-category">
-                    <div class="category-header">
-                        <span class="category-icon">📊</span>
-                        <h3>Manajemen Akun</h3>
+# 2. Optimization
+php artisan storage:link
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# 3. Permissions (Crucial!)
+cd /var/www
+chown -R www-data:www-data kaskecil
+chmod -R 775 kaskecil/storage kaskecil/bootstrap/cache</code></pre>
+                </div>
+            </section>
+
+            <!-- Phase 4: Nginx -->
+            <section id="nginx" class="scroll-mt-28" x-intersect="activeSection = 'nginx'">
+                <h3 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                    <span
+                        class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-sm">4</span>
+                    Nginx Configuration (Final)
+                </h3>
+
+                <p class="text-slate-600 mb-4">Edit file: <code>/etc/nginx/sites-available/kaskecil</code></p>
+
+                <div class="bg-slate-900 rounded-xl overflow-hidden shadow-lg mb-6">
+                    <div class="flex items-center justify-between px-4 py-2 bg-slate-800 border-b border-slate-700">
+                        <span class="text-xs text-slate-400 font-mono">nginx.conf</span>
+                        <button class="text-xs text-blue-400 hover:text-blue-300"
+                            onclick="copyToClipboard(this)">Copy</button>
                     </div>
-                    <ul class="feature-list">
-                        <li>Akun AAS (Debet/Kredit) per unit</li>
-                        <li>Mata Anggaran dengan tracking saldo</li>
-                        <li>Contoh: Kas Kecil, Beban ATK, Transport</li>
-                        <li>Integrasi dengan transaksi</li>
-                    </ul>
+                    <pre class="p-4 text-sm text-slate-300 overflow-x-auto"><code>server {
+    listen 80;
+    server_name 192.168.13.75;
+    root /var/www/kaskecil/public;
+
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Content-Type-Options "nosniff";
+
+    index index.php;
+    charset utf-8;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    error_page 404 /index.php;
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}</code></pre>
                 </div>
 
-                <div class="feature-category">
-                    <div class="category-header">
-                        <span class="category-icon">💵</span>
-                        <h3>Manajemen Transaksi</h3>
-                    </div>
-                    <ul class="feature-list">
-                        <li>Input transaksi dengan bukti</li>
-                        <li>Upload hingga 3 lampiran</li>
-                        <li>Filter berdasar tanggal & kategori</li>
-                        <li>Rekap transaksi harian</li>
-                    </ul>
+                <div class="bg-green-50 rounded-xl p-6 border border-green-200">
+                    <h4 class="text-green-800 font-bold mb-2">🚀 Final Steps</h4>
+                    <p class="text-green-700 mb-4">Aktifkan konfigurasi dan restart service:</p>
+                    <code
+                        class="block bg-white px-4 py-2 rounded border border-green-200 text-sm font-mono text-slate-700">
+                        rm /etc/nginx/sites-enabled/default<br>
+                        ln -s /etc/nginx/sites-available/kaskecil /etc/nginx/sites-enabled/<br>
+                        nginx -t<br>
+                        systemctl restart nginx
+                    </code>
+                    <p class="text-green-800 font-bold mt-4 text-center">
+                        🎉 DEPLOYMENT SUCCESSFUL! <br> Access: <a href="http://192.168.13.75" target="_blank"
+                            class="underline">http://192.168.13.75</a>
+                    </p>
                 </div>
+            </section>
 
-                <div class="feature-category">
-                    <div class="category-header">
-                        <span class="category-icon">⚖️</span>
-                        <h3>Draft & Approval</h3>
-                    </div>
-                    <ul class="feature-list">
-                        <li>Simpan transaksi sebagai draft</li>
-                        <li>Submit pengajuan ke atasan</li>
-                        <li>Review & approval dengan catatan</li>
-                        <li>Notifikasi status update</li>
-                    </ul>
-                </div>
+        </main>
+    </div>
 
-                <div class="feature-category">
-                    <div class="category-header">
-                        <span class="category-icon">📈</span>
-                        <h3>Dashboard & Laporan</h3>
-                    </div>
-                    <ul class="feature-list">
-                        <li>Dashboard summary per role</li>
-                        <li>Rekap keuangan per unit/cabang</li>
-                        <li>Laporan konsolidasi</li>
-                        <li>Export data Excel/PDF</li>
-                    </ul>
-                </div>
+    <!-- Script for Copy to Clipboard -->
+    <script>
+        function copyToClipboard(button) {
+            const pre = button.parentElement.nextElementSibling;
+            const code = pre.querySelector('code') || pre;
+            const text = code.innerText;
 
-                <div class="feature-category">
-                    <div class="category-header">
-                        <span class="category-icon">⚙️</span>
-                        <h3>Fitur Teknis</h3>
-                    </div>
-                    <ul class="feature-list">
-                        <li>Authentication token-based API</li>
-                        <li>FCM Push Notifications</li>
-                        <li>Multi-platform (Web + Mobile)</li>
-                        <li>Global settings & konfigurasi</li>
-                    </ul>
-                </div>
-
-                <div class="feature-category">
-                    <div class="category-header">
-                        <span class="category-icon">🌍</span>
-                        <h3>Multilanguage Support</h3>
-                    </div>
-                    <ul class="feature-list">
-                        <li>Support Bahasa Indonesia, English, Arabic</li>
-                        <li>RTL Layout Support for Arabic</li>
-                        <li>Persistent Language Selection</li>
-                        <li>Dynamic Content Translation</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tech Stack Section -->
-    <section id="tech" class="section section-dark">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-badge">Technology</span>
-                <h2 class="section-title">Tech Stack</h2>
-                <p class="section-subtitle">Teknologi modern yang digunakan dalam pengembangan</p>
-            </div>
-
-            <div class="tech-architecture">
-                <div class="arch-layer">
-                    <h4>Frontend</h4>
-                    <div class="tech-cards">
-                        <div class="tech-card">
-                            <span class="tech-emoji">🌐</span>
-                            <span class="tech-name">React + Vite</span>
-                            <span class="tech-desc">Web Admin Panel</span>
-                        </div>
-                        <div class="tech-card">
-                            <span class="tech-emoji">📱</span>
-                            <span class="tech-name">React Native</span>
-                            <span class="tech-desc">Mobile App (Expo)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="arch-connector">
-                    <svg width="40" height="60" viewBox="0 0 40 60">
-                        <path d="M20 0v60" stroke="var(--primary)" stroke-width="2" stroke-dasharray="4 4" />
-                    </svg>
-                </div>
-
-                <div class="arch-layer">
-                    <h4>Shared Packages</h4>
-                    <div class="tech-cards">
-                        <div class="tech-card small">
-                            <span class="tech-name">📦 API Client</span>
-                        </div>
-                        <div class="tech-card small">
-                            <span class="tech-name">📦 Validators (Zod)</span>
-                        </div>
-                        <div class="tech-card small">
-                            <span class="tech-name">📦 Shared Types</span>
-                        </div>
-                        <div class="tech-card small">
-                            <span class="tech-name">🌍 i18n (i18next)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="arch-connector">
-                    <svg width="40" height="60" viewBox="0 0 40 60">
-                        <path d="M20 0v60" stroke="var(--primary)" stroke-width="2" stroke-dasharray="4 4" />
-                    </svg>
-                </div>
-
-                <div class="arch-layer">
-                    <h4>Backend</h4>
-                    <div class="tech-cards">
-                        <div class="tech-card">
-                            <span class="tech-emoji">⚙️</span>
-                            <span class="tech-name">Laravel 12</span>
-                            <span class="tech-desc">REST API (PHP 8.2+)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="arch-connector">
-                    <svg width="40" height="60" viewBox="0 0 40 60">
-                        <path d="M20 0v60" stroke="var(--primary)" stroke-width="2" stroke-dasharray="4 4" />
-                    </svg>
-                </div>
-
-                <div class="arch-layer">
-                    <h4>Database</h4>
-                    <div class="tech-cards">
-                        <div class="tech-card">
-                            <span class="tech-emoji">🗃️</span>
-                            <span class="tech-name">PostgreSQL</span>
-                            <span class="tech-desc">Primary Database</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="commands-section">
-                <h3>Quick Start Commands</h3>
-                <div class="command-grid">
-                    <div class="command-item">
-                        <code>pnpm install</code>
-                        <span>Install dependencies</span>
-                    </div>
-                    <div class="command-item">
-                        <code>pnpm docker:up</code>
-                        <span>Start database</span>
-                    </div>
-                    <div class="command-item">
-                        <code>pnpm db:fresh</code>
-                        <span>Reset & seed database</span>
-                    </div>
-                    <div class="command-item">
-                        <code>pnpm dev</code>
-                        <span>Run all apps</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="credentials-box">
-                <h3>🔐 Default Login Credentials</h3>
-                <div class="cred-grid">
-                    <div class="cred-item">
-                        <span class="cred-role">Super Admin</span>
-                        <span class="cred-email">admin@kaskecil.com</span>
-                        <span class="cred-pass">password</span>
-                    </div>
-                    <div class="cred-item">
-                        <span class="cred-role">Admin Unit</span>
-                        <span class="cred-email">admin.unit@kaskecil.com</span>
-                        <span class="cred-pass">password</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <span class="logo-icon">💰</span>
-                    <span class="logo-text">Kas Kecil v4.0</span>
-                </div>
-                <p class="footer-text">
-                    Dokumentasi ini dibuat berdasarkan analisis kode sumber aplikasi.<br>
-                    Untuk detail teknis lebih lanjut, lihat file <code>WORKFLOW.md</code> di root project.
-                </p>
-                <div class="footer-meta">
-                    <span>© 2026 Kas Kecil Imprest Methode App</span>
-                    <span>•</span>
-                    <span>Built with ❤️</span>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.innerText;
+                button.innerText = 'Copied!';
+                button.classList.add('text-green-400');
+                setTimeout(() => {
+                    button.innerText = originalText;
+                    button.classList.remove('text-green-400');
+                }, 2000);
+            });
+        }
+    </script>
 </body>
 
 </html>
