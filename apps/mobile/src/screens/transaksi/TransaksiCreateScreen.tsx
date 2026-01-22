@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, TouchableOpacity, TextInput, ScrollView, Image, ActivityIndicator, Platform, Alert, Modal, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTransaksi, useAuth, useMaster } from '@/lib/api-client';
@@ -11,6 +12,7 @@ import clsx from 'clsx';
 
 export default function TransaksiCreateScreen() {
     const navigation = useNavigation<any>();
+    const { t } = useTranslation();
     const { create, isCreating } = useTransaksi();
     const { user } = useAuth();
     const { mataAnggaran, isMataAnggaranLoading } = useMaster({
@@ -74,7 +76,7 @@ export default function TransaksiCreateScreen() {
                 setSelectedImage(result.assets[0]);
             }
         } catch (error) {
-            Alert.alert('Error', 'Gagal memuat gambar');
+            Alert.alert(t('common.error'), t('common.error'));
         }
     };
 
@@ -96,13 +98,13 @@ export default function TransaksiCreateScreen() {
                 setSelectedImage(result.assets[0]);
             }
         } catch (error) {
-            Alert.alert('Error', 'Gagal membuka kamera');
+            Alert.alert(t('common.error'), t('common.error'));
         }
     };
 
     const handleSubmit = async () => {
         if (!formData.jumlah || !formData.keterangan || !formData.kode_matanggaran) {
-            Alert.alert('Data Tidak Lengkap', 'Mohon lengkapi:\n- Mata Anggaran\n- Jumlah\n- Keterangan');
+            Alert.alert(t('transaction.incompleteData'), t('transaction.incompleteDataDesc'));
             return;
         }
 
@@ -137,12 +139,12 @@ export default function TransaksiCreateScreen() {
             }
 
             await create(payload);
-            Alert.alert('Sukses', 'Transaksi berhasil disimpan', [
+            Alert.alert(t('common.success'), t('transaction.saveSuccess'), [
                 { text: 'OK', onPress: () => navigation.goBack() }
             ]);
         } catch (error: any) {
             console.error(error);
-            Alert.alert('Error', error?.response?.data?.message || 'Gagal menyimpan transaksi');
+            Alert.alert(t('common.error'), error?.response?.data?.message || t('transaction.saveError'));
         }
     };
 
@@ -171,7 +173,7 @@ export default function TransaksiCreateScreen() {
                 <TouchableOpacity onPress={() => navigation.goBack()} className="mr-4 w-10 h-10 items-center justify-center rounded-full bg-gray-50">
                     <ArrowLeft size={24} color="#374151" />
                 </TouchableOpacity>
-                <Text className="text-xl font-bold text-gray-900">Catat Transaksi</Text>
+                <Text className="text-xl font-bold text-gray-900">{t('transaction.add')}</Text>
             </View>
 
             <ScrollView className="flex-1 p-6">
@@ -181,13 +183,13 @@ export default function TransaksiCreateScreen() {
                         className={`flex-1 py-3 rounded-lg items-center ${formData.kategori === 'pengeluaran' ? 'bg-white shadow-sm' : ''}`}
                         onPress={() => setFormData({ ...formData, kategori: 'pengeluaran' })}
                     >
-                        <Text className={`font-semibold ${formData.kategori === 'pengeluaran' ? 'text-red-600' : 'text-gray-500'}`}>Pengeluaran</Text>
+                        <Text className={`font-semibold ${formData.kategori === 'pengeluaran' ? 'text-red-600' : 'text-gray-500'}`}>{t('transaction.expense')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         className={`flex-1 py-3 rounded-lg items-center ${formData.kategori === 'pengisian' ? 'bg-white shadow-sm' : ''}`}
                         onPress={() => setFormData({ ...formData, kategori: 'pengisian' })}
                     >
-                        <Text className={`font-semibold ${formData.kategori === 'pengisian' ? 'text-green-600' : 'text-gray-500'}`}>Pengisian</Text>
+                        <Text className={`font-semibold ${formData.kategori === 'pengisian' ? 'text-green-600' : 'text-gray-500'}`}>{t('transaction.income')}</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -196,20 +198,20 @@ export default function TransaksiCreateScreen() {
 
                     {/* Mata Anggaran Selector */}
                     <View>
-                        <Text className="text-gray-700 font-medium mb-2 ml-1">Mata Anggaran <Text className="text-red-500">*</Text></Text>
+                        <Text className="text-gray-700 font-medium mb-2 ml-1">{t('transaction.budgetAccount')} <Text className="text-red-500">*</Text></Text>
                         <TouchableOpacity
                             onPress={() => setShowMataAnggaranModal(true)}
                             className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 flex-row justify-between items-center"
                         >
                             <Text className={clsx("flex-1", !formData.kode_matanggaran ? "text-gray-400" : "text-gray-900 font-medium")}>
-                                {formData.kode_matanggaran ? selectedMataAnggaranLabel : "- Pilih Mata Anggaran -"}
+                                {formData.kode_matanggaran ? selectedMataAnggaranLabel : `- ${t('transaction.selectBudgetAccount')} -`}
                             </Text>
                             <ChevronDown size={20} color="#6B7280" />
                         </TouchableOpacity>
                     </View>
 
                     <View>
-                        <Text className="text-gray-700 font-medium mb-2 ml-1">Jumlah (Rp) <Text className="text-red-500">*</Text></Text>
+                        <Text className="text-gray-700 font-medium mb-2 ml-1">{t('transaction.amount')} <Text className="text-red-500">*</Text></Text>
                         <TextInput
                             className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-4 text-xl font-bold text-gray-900"
                             placeholder="0"
@@ -220,7 +222,7 @@ export default function TransaksiCreateScreen() {
                     </View>
 
                     <View>
-                        <Text className="text-gray-700 font-medium mb-2 ml-1">Tanggal <Text className="text-red-500">*</Text></Text>
+                        <Text className="text-gray-700 font-medium mb-2 ml-1">{t('transaction.date')} <Text className="text-red-500">*</Text></Text>
                         <TouchableOpacity
                             onPress={() => setShowDatePicker(true)}
                             className="flex-row items-center bg-gray-50 border border-gray-200 rounded-xl px-4 py-3"
@@ -243,7 +245,7 @@ export default function TransaksiCreateScreen() {
                     </View>
 
                     <View>
-                        <Text className="text-gray-700 font-medium mb-2 ml-1">Keterangan <Text className="text-red-500">*</Text></Text>
+                        <Text className="text-gray-700 font-medium mb-2 ml-1">{t('transaction.description')} <Text className="text-red-500">*</Text></Text>
                         <TextInput
                             className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-gray-900 h-24"
                             placeholder=""
@@ -257,7 +259,7 @@ export default function TransaksiCreateScreen() {
                     {formData.kategori === 'pengeluaran' && (
                         <View>
                             <Text className="text-gray-700 font-medium mb-2 ml-1">
-                                Bukti Foto <Text className="text-gray-400 font-normal italic">(Opsional)</Text>
+                                {t('transaction.attachment')} <Text className="text-gray-400 font-normal italic">{t('transaction.attachmentOptional')}</Text>
                             </Text>
                             {!selectedImage ? (
                                 <View className="flex-row gap-3">
@@ -266,14 +268,14 @@ export default function TransaksiCreateScreen() {
                                         onPress={handleCamera}
                                     >
                                         <Camera size={24} color="#9CA3AF" />
-                                        <Text className="text-gray-400 mt-2 text-xs font-bold">Kamera</Text>
+                                        <Text className="text-gray-400 mt-2 text-xs font-bold">{t('transaction.camera')}</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity
                                         className="flex-1 bg-gray-50 border border-gray-200 border-dashed rounded-xl p-6 items-center justify-center"
                                         onPress={handleImagePick}
                                     >
                                         <ImageIcon size={24} color="#9CA3AF" />
-                                        <Text className="text-gray-400 mt-2 text-xs font-bold">Galeri</Text>
+                                        <Text className="text-gray-400 mt-2 text-xs font-bold">{t('transaction.gallery')}</Text>
                                     </TouchableOpacity>
                                 </View>
                             ) : (
@@ -313,7 +315,7 @@ export default function TransaksiCreateScreen() {
                     {isCreating ? (
                         <ActivityIndicator color="white" />
                     ) : (
-                        <Text className="text-white font-bold text-lg">Simpan Transaksi</Text>
+                        <Text className="text-white font-bold text-lg">{t('common.save')}</Text>
                     )}
                 </TouchableOpacity>
             </View>
@@ -330,7 +332,7 @@ export default function TransaksiCreateScreen() {
                         <TouchableOpacity onPress={() => setShowMataAnggaranModal(false)} className="mr-4">
                             <X size={24} color="#374151" />
                         </TouchableOpacity>
-                        <Text className="text-lg font-bold text-gray-900">Pilih Mata Anggaran</Text>
+                        <Text className="text-lg font-bold text-gray-900">{t('transaction.selectBudgetAccount')}</Text>
                     </View>
 
                     <View className="p-4 border-b border-gray-100">
@@ -338,7 +340,7 @@ export default function TransaksiCreateScreen() {
                             <Search size={20} color="#9CA3AF" />
                             <TextInput
                                 className="flex-1 ml-2 text-gray-900 h-8"
-                                placeholder="Cari kode atau nama akun..."
+                                placeholder={t('transaction.searchBudgetAccount')}
                                 value={searchQuery}
                                 onChangeText={setSearchQuery}
                             />
@@ -354,7 +356,7 @@ export default function TransaksiCreateScreen() {
                             contentContainerStyle={{ padding: 16 }}
                             ListEmptyComponent={
                                 <View className="items-center py-8">
-                                    <Text className="text-gray-500">Tidak ada data akun yang sesuai.</Text>
+                                    <Text className="text-gray-500">{t('transaction.noAccountData')}</Text>
                                 </View>
                             }
                             renderItem={({ item }: { item: any }) => (

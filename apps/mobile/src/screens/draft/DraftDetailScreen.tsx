@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Linking, Alert, Modal, TextInput } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useDraftDetail, useDraft } from '@/lib/api-client';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -22,6 +23,7 @@ import { formatDateTime, formatCurrency } from '@/lib/shared';
 export default function DraftDetailScreen() {
     const route = useRoute<any>();
     const navigation = useNavigation();
+    const { t } = useTranslation();
     const { id } = route.params || {};
 
     const { data: draft, isLoading, error } = useDraftDetail(id);
@@ -51,19 +53,19 @@ export default function DraftDetailScreen() {
 
     const handleApprove = () => {
         Alert.alert(
-            "Konfirmasi",
-            "Apakah Anda yakin ingin menyetujui draft ini?",
+            t('common.confirm'),
+            t('draft.approveConfirm'),
             [
-                { text: "Batal", style: "cancel" },
+                { text: t('common.cancel'), style: "cancel" },
                 {
-                    text: "Setujui",
+                    text: t('draft.approve'),
                     onPress: async () => {
                         try {
                             await approve({ id });
-                            Alert.alert("Sukses", "Draft berhasil disetujui");
+                            Alert.alert(t('common.success'), t('draft.approved'));
                             navigation.goBack();
                         } catch (err: any) {
-                            Alert.alert("Error", err.message || "Gagal menyetujui draft");
+                            Alert.alert(t('common.error'), err.message || t('draft.approveError'));
                         }
                     }
                 }
@@ -73,17 +75,17 @@ export default function DraftDetailScreen() {
 
     const handleReject = async () => {
         if (!rejectReason.trim()) {
-            Alert.alert("Error", "Mohon isi alasan penolakan");
+            Alert.alert(t('common.error'), t('draft.rejectReasonReq'));
             return;
         }
 
         try {
             await reject({ id, data: { catatan: rejectReason } });
             setRejectModalVisible(false);
-            Alert.alert("Sukses", "Draft berhasil ditolak");
+            Alert.alert(t('common.success'), t('draft.rejected'));
             navigation.goBack();
         } catch (err: any) {
-            Alert.alert("Error", err.message || "Gagal menolak draft");
+            Alert.alert(t('common.error'), err.message || t('draft.rejectError'));
         }
     };
 
@@ -91,7 +93,7 @@ export default function DraftDetailScreen() {
         return (
             <SafeAreaView className="flex-1 bg-white justify-center items-center">
                 <ActivityIndicator size="large" color="#2563EB" />
-                <Text className="text-gray-500 mt-4">Memuat detail draft...</Text>
+                <Text className="text-gray-500 mt-4">{t('draft.loadingDetail')}</Text>
             </SafeAreaView>
         );
     }
@@ -99,12 +101,12 @@ export default function DraftDetailScreen() {
     if (error || !draft) {
         return (
             <SafeAreaView className="flex-1 bg-white justify-center items-center p-6">
-                <Text className="text-red-500 text-lg font-bold mb-2">Terjadi Kesalahan</Text>
+                <Text className="text-red-500 text-lg font-bold mb-2">{t('common.error')}</Text>
                 <Text className="text-gray-500 text-center mb-6">
-                    Gagal memuat detail draft. Silakan coba lagi.
+                    {t('draft.loadError')}
                 </Text>
                 <TouchableOpacity onPress={() => navigation.goBack()} className="bg-blue-600 px-6 py-3 rounded-xl">
-                    <Text className="text-white font-bold">Kembali</Text>
+                    <Text className="text-white font-bold">{t('common.back')}</Text>
                 </TouchableOpacity>
             </SafeAreaView>
         );
@@ -117,7 +119,7 @@ export default function DraftDetailScreen() {
                 <TouchableOpacity onPress={() => navigation.goBack()} className="mr-4 w-10 h-10 items-center justify-center rounded-full bg-gray-50">
                     <ArrowLeft size={24} color="#1F2937" />
                 </TouchableOpacity>
-                <Text className="text-xl font-bold text-gray-900">Detail Draft</Text>
+                <Text className="text-xl font-bold text-gray-900">{t('draft.detail')}</Text>
             </View>
 
             <ScrollView className="flex-1" contentContainerStyle={{ padding: 24, paddingBottom: 100 }}>
@@ -126,7 +128,7 @@ export default function DraftDetailScreen() {
                     <View className={clsx("px-3 py-1.5 rounded-full flex-row items-center gap-2", getStatusColor(draft.status))}>
                         {getStatusIcon(draft.status)}
                         <Text className={clsx("text-sm font-bold capitalize", getStatusColor(draft.status).split(' ')[1])}>
-                            {draft.status === 'pending' ? 'Menunggu Persetujuan' : draft.status}
+                            {draft.status === 'pending' ? t('draft.pending') : t(`draft.${draft.status}`)}
                         </Text>
                     </View>
                 </View>
@@ -134,7 +136,7 @@ export default function DraftDetailScreen() {
                 {/* Main Card */}
                 <View className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
                     <View className="flex-row justify-between items-start mb-2">
-                        <Text className="text-gray-500 text-sm">Total Pengajuan</Text>
+                        <Text className="text-gray-500 text-sm">{t('draft.totalAmount')}</Text>
                         <Text className="text-xs text-gray-400">#{draft.id}</Text>
                     </View>
 
@@ -153,7 +155,7 @@ export default function DraftDetailScreen() {
                 {/* Rejection Note if Rejected */}
                 {draft.status === 'rejected' && draft.catatan_approval && (
                     <View className="bg-red-50 p-5 rounded-xl border border-red-100 mb-6">
-                        <Text className="font-bold text-red-800 mb-1">Alasan Penolakan:</Text>
+                        <Text className="font-bold text-red-800 mb-1">{t('draft.rejectionReason')}:</Text>
                         <Text className="text-red-700">{draft.catatan_approval}</Text>
                     </View>
                 )}
@@ -163,7 +165,7 @@ export default function DraftDetailScreen() {
                     <View className="bg-white p-5 rounded-xl border border-gray-100">
                         <View className="flex-row items-center mb-3">
                             <FileText size={18} color="#4B5563" />
-                            <Text className="font-bold text-gray-800 ml-2">Keterangan</Text>
+                            <Text className="font-bold text-gray-800 ml-2">{t('transaction.description')}</Text>
                         </View>
                         <Text className="text-gray-600 leading-relaxed">
                             {draft.keterangan}
@@ -173,16 +175,16 @@ export default function DraftDetailScreen() {
                     <View className="bg-white p-5 rounded-xl border border-gray-100">
                         <View className="flex-row items-center mb-4">
                             <CreditCard size={18} color="#4B5563" />
-                            <Text className="font-bold text-gray-800 ml-2">Anggaran</Text>
+                            <Text className="font-bold text-gray-800 ml-2">{t('transaction.budget')}</Text>
                         </View>
                         <View className="mb-4">
-                            <Text className="text-xs text-gray-400 mb-1">Kode Mata Anggaran</Text>
+                            <Text className="text-xs text-gray-400 mb-1">{t('transaction.budgetCode')}</Text>
                             <Text className="text-gray-800 font-medium font-mono bg-gray-50 self-start px-2 py-1 rounded">
                                 {draft.mata_anggaran?.kode_matanggaran || draft.kode_matanggaran || '-'}
                             </Text>
                         </View>
                         <View>
-                            <Text className="text-xs text-gray-400 mb-1">Nama Mata Anggaran</Text>
+                            <Text className="text-xs text-gray-400 mb-1">{t('transaction.budgetName')}</Text>
                             <Text className="text-gray-800 font-medium">
                                 {draft.mata_anggaran?.nama_matanggaran || '-'}
                             </Text>
@@ -192,16 +194,16 @@ export default function DraftDetailScreen() {
                     <View className="bg-white p-5 rounded-xl border border-gray-100">
                         <View className="flex-row items-center mb-4">
                             <Building size={18} color="#4B5563" />
-                            <Text className="font-bold text-gray-800 ml-2">Unit & Cabang</Text>
+                            <Text className="font-bold text-gray-800 ml-2">{t('draft.unitBranch')}</Text>
                         </View>
                         <View className="mb-4">
-                            <Text className="text-xs text-gray-400 mb-1">Cabang</Text>
+                            <Text className="text-xs text-gray-400 mb-1">{t('profile.branch')}</Text>
                             <Text className="text-gray-800 font-medium">
                                 {draft.cabang?.nama_cabang || '-'}
                             </Text>
                         </View>
                         <View>
-                            <Text className="text-xs text-gray-400 mb-1">Unit</Text>
+                            <Text className="text-xs text-gray-400 mb-1">{t('profile.unit')}</Text>
                             <Text className="text-gray-800 font-medium">
                                 {draft.unit?.nama_unit || '-'}
                             </Text>
@@ -211,7 +213,7 @@ export default function DraftDetailScreen() {
                     <View className="bg-white p-5 rounded-xl border border-gray-100">
                         <View className="flex-row items-center mb-4">
                             <User size={18} color="#4B5563" />
-                            <Text className="font-bold text-gray-800 ml-2">Diajukan Oleh</Text>
+                            <Text className="font-bold text-gray-800 ml-2">{t('draft.submittedBy')}</Text>
                         </View>
                         <View className="flex-row items-center">
                             <View className="w-10 h-10 bg-blue-100 rounded-full items-center justify-center mr-3">
@@ -235,7 +237,7 @@ export default function DraftDetailScreen() {
                         <View className="bg-white p-5 rounded-xl border border-gray-100 pb-2">
                             <View className="flex-row items-center mb-4">
                                 <Paperclip size={18} color="#4B5563" />
-                                <Text className="font-bold text-gray-800 ml-2">Lampiran</Text>
+                                <Text className="font-bold text-gray-800 ml-2">{t('transaction.attachment')}</Text>
                             </View>
                             {[draft.lampiran, draft.lampiran2, draft.lampiran3].map((lampiran, index) => {
                                 if (!lampiran) return null;
@@ -254,7 +256,7 @@ export default function DraftDetailScreen() {
                                                 <FileText size={16} color="#B91C1C" />
                                             </View>
                                             <Text className="text-gray-700 font-medium text-sm flex-1" numberOfLines={1}>
-                                                Lampiran {index + 1}
+                                                {t('transaction.attachment')} {index + 1}
                                             </Text>
                                         </View>
                                         <Download size={18} color="#4B5563" />
@@ -277,7 +279,7 @@ export default function DraftDetailScreen() {
                         {isRejecting ? (
                             <ActivityIndicator color="#B91C1C" />
                         ) : (
-                            <Text className="text-red-700 font-bold">Tolak</Text>
+                            <Text className="text-red-700 font-bold">{t('draft.reject')}</Text>
                         )}
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -288,7 +290,7 @@ export default function DraftDetailScreen() {
                         {isApproving ? (
                             <ActivityIndicator color="white" />
                         ) : (
-                            <Text className="text-white font-bold">Setujui</Text>
+                            <Text className="text-white font-bold">{t('draft.approve')}</Text>
                         )}
                     </TouchableOpacity>
                 </View>
@@ -304,16 +306,16 @@ export default function DraftDetailScreen() {
                 <View className="flex-1 justify-end bg-black/50">
                     <View className="bg-white rounded-t-3xl p-6">
                         <View className="flex-row justify-between items-center mb-4">
-                            <Text className="text-xl font-bold text-gray-900">Tolak Draft</Text>
+                            <Text className="text-xl font-bold text-gray-900">{t('draft.reject')}</Text>
                             <TouchableOpacity onPress={() => setRejectModalVisible(false)}>
                                 <XCircle size={24} color="#9CA3AF" />
                             </TouchableOpacity>
                         </View>
 
-                        <Text className="text-gray-600 mb-2">Alasan Penolakan</Text>
+                        <Text className="text-gray-600 mb-2">{t('draft.rejectionReason')}</Text>
                         <TextInput
                             className="bg-gray-50 border border-gray-200 rounded-xl p-4 min-h-[100px] text-gray-900 mb-6"
-                            placeholder="Tulis alasan penolakan di sini..."
+                            placeholder={t('draft.rejectPlaceholder')}
                             multiline
                             textAlignVertical="top"
                             value={rejectReason}
@@ -328,7 +330,7 @@ export default function DraftDetailScreen() {
                             {isRejecting ? (
                                 <ActivityIndicator color="white" />
                             ) : (
-                                <Text className="text-white font-bold text-lg">Konfirmasi Penolakan</Text>
+                                <Text className="text-white font-bold text-lg">{t('draft.rejectConfirm')}</Text>
                             )}
                         </TouchableOpacity>
                     </View>

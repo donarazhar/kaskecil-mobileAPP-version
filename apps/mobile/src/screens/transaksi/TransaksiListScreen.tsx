@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, ActivityIndicator, Modal, ScrollView } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useTransaksi, useDraft } from '@/lib/api-client';
 import { formatCurrency, formatDate } from '@/lib/shared';
 import { Plus, Search, ArrowUpRight, ArrowDownLeft, Calendar, Wallet, CheckCircle, Clock, ChevronDown, X, Filter, TrendingDown, TrendingUp } from 'lucide-react-native';
@@ -19,6 +20,7 @@ const FilterSelect = ({
     options: { label: string; value: string | number }[];
     onSelect: (value: any) => void;
 }) => {
+    const { t } = useTranslation();
     const [modalVisible, setModalVisible] = React.useState(false);
     const selectedLabel = options.find(o => o.value === value)?.label || label;
 
@@ -50,7 +52,7 @@ const FilterSelect = ({
                 >
                     <View className="bg-white rounded-t-3xl max-h-[60%] overflow-hidden">
                         <View className="flex-row justify-between items-center p-5 border-b border-gray-100">
-                            <Text className="text-lg font-bold text-gray-900">Pilih {label}</Text>
+                            <Text className="text-lg font-bold text-gray-900">{t('transaction.select')} {label}</Text>
                             <TouchableOpacity
                                 onPress={() => setModalVisible(false)}
                                 className="w-10 h-10 bg-gray-100 rounded-full items-center justify-center"
@@ -88,6 +90,7 @@ const FilterSelect = ({
 
 export default function TransaksiListScreen() {
     const navigation = useNavigation<any>();
+    const { t } = useTranslation();
     const [searchQuery, setSearchQuery] = React.useState('');
     const [category, setCategory] = React.useState<'pengeluaran' | 'pengisian'>('pengeluaran');
 
@@ -168,8 +171,8 @@ export default function TransaksiListScreen() {
                 <View className="px-5 pt-4 pb-4">
                     <View className="flex-row justify-between items-center mb-5">
                         <View>
-                            <Text className="text-2xl font-bold text-gray-900">Riwayat</Text>
-                            <Text className="text-gray-500 text-sm">Transaksi Kas Kecil</Text>
+                            <Text className="text-2xl font-bold text-gray-900">{t('transaction.history')}</Text>
+                            <Text className="text-gray-500 text-sm">{t('transaction.historySubtitle')}</Text>
                         </View>
                         <View className="flex-row items-center gap-2">
                             <View className={`px-3 py-1.5 rounded-full ${category === 'pengeluaran' ? 'bg-red-100' : 'bg-emerald-100'}`}>
@@ -190,7 +193,7 @@ export default function TransaksiListScreen() {
                             activeOpacity={0.8}
                         >
                             <ArrowDownLeft size={16} color={category === 'pengeluaran' ? '#EF4444' : '#9CA3AF'} />
-                            <Text className={`font-bold ml-2 ${category === 'pengeluaran' ? 'text-red-600' : 'text-gray-400'}`}>Pengeluaran</Text>
+                            <Text className={`font-bold ml-2 ${category === 'pengeluaran' ? 'text-red-600' : 'text-gray-400'}`}>{t('transaction.expense')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             className={`flex-1 py-3 rounded-xl items-center flex-row justify-center ${category === 'pengisian' ? 'bg-white shadow-sm' : ''}`}
@@ -198,7 +201,7 @@ export default function TransaksiListScreen() {
                             activeOpacity={0.8}
                         >
                             <ArrowUpRight size={16} color={category === 'pengisian' ? '#10B981' : '#9CA3AF'} />
-                            <Text className={`font-bold ml-2 ${category === 'pengisian' ? 'text-emerald-600' : 'text-gray-400'}`}>Pengisian</Text>
+                            <Text className={`font-bold ml-2 ${category === 'pengisian' ? 'text-emerald-600' : 'text-gray-400'}`}>{t('transaction.income')}</Text>
                         </TouchableOpacity>
                     </View>
 
@@ -209,7 +212,7 @@ export default function TransaksiListScreen() {
                         </View>
                         <TextInput
                             className="flex-1 text-gray-900 py-3 text-base"
-                            placeholder={`Cari ${category}...`}
+                            placeholder={category === 'pengeluaran' ? t('transaction.searchExpense') : t('transaction.searchIncome')}
                             value={searchQuery}
                             onChangeText={setSearchQuery}
                             placeholderTextColor="#9CA3AF"
@@ -225,20 +228,17 @@ export default function TransaksiListScreen() {
                     {category === 'pengeluaran' && (
                         <View className="flex-row items-center justify-between mt-4 gap-3">
                             <FilterSelect
-                                label="Bulan"
+                                label={t('transaction.month')}
                                 value={selectedMonth}
-                                options={[
-                                    'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-                                    'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-                                ].map((label, index) => ({
-                                    label,
-                                    value: index + 1
+                                options={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((month) => ({
+                                    label: t(`transaction.months.${month}`),
+                                    value: month
                                 }))}
                                 onSelect={setSelectedMonth}
                             />
 
                             <FilterSelect
-                                label="Tahun"
+                                label={t('transaction.year')}
                                 value={selectedYear}
                                 options={Array.from({ length: 5 }, (_, i) => {
                                     const year = new Date().getFullYear() - i;
@@ -276,14 +276,14 @@ export default function TransaksiListScreen() {
                             <View className="w-20 h-20 bg-gray-100 rounded-3xl items-center justify-center mb-4">
                                 <Wallet size={40} color="#D1D5DB" />
                             </View>
-                            <Text className="text-xl font-bold text-gray-900 mb-2">Belum Ada Transaksi</Text>
-                            <Text className="text-gray-500 text-center mb-6 px-8">Transaksi kas akan muncul di sini setelah Anda mencatat.</Text>
+                            <Text className="text-xl font-bold text-gray-900 mb-2">{t('transaction.emptyTitle')}</Text>
+                            <Text className="text-gray-500 text-center mb-6 px-8">{t('transaction.emptyDesc')}</Text>
                             <TouchableOpacity
                                 className="bg-blue-600 px-6 py-3 rounded-xl flex-row items-center"
                                 onPress={() => navigation.navigate('TransaksiCreate')}
                             >
                                 <Plus size={18} color="white" />
-                                <Text className="text-white font-bold ml-2">Catat Transaksi</Text>
+                                <Text className="text-white font-bold ml-2">{t('transaction.create')}</Text>
                             </TouchableOpacity>
                         </View>
                     }
@@ -328,7 +328,7 @@ export default function TransaksiListScreen() {
                                                 <View className={`self-start px-2.5 py-1 rounded-full mt-2 flex-row items-center ${trx.is_draft ? 'bg-amber-100' : 'bg-emerald-100'}`}>
                                                     {trx.is_draft ? <Clock size={10} color="#B45309" /> : <CheckCircle size={10} color="#059669" />}
                                                     <Text className={`text-[10px] ml-1 font-bold ${trx.is_draft ? 'text-amber-700' : 'text-emerald-700'}`}>
-                                                        {trx.is_draft ? 'Belum Cair' : 'Sudah Cair'}
+                                                        {trx.is_draft ? t('transaction.pending') : t('transaction.completed')}
                                                     </Text>
                                                 </View>
                                             )}

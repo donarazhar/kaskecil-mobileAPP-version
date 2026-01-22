@@ -1,9 +1,11 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Alert } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/lib/api-client';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import LanguageSelector from '@/components/LanguageSelector';
 import {
     User,
     LogOut,
@@ -69,16 +71,17 @@ function MenuSection({ title, children }: { title: string; children: React.React
 
 export default function MenuScreen() {
     const navigation = useNavigation<any>();
+    const { t } = useTranslation();
     const { user, logout } = useAuth();
 
     const handleLogout = () => {
         Alert.alert(
-            'Keluar dari Akun',
-            'Apakah Anda yakin ingin keluar dari aplikasi?',
+            t('menu.logoutTitle'),
+            t('menu.logoutConfirm'),
             [
-                { text: 'Batal', style: 'cancel' },
+                { text: t('common.cancel'), style: 'cancel' },
                 {
-                    text: 'Keluar',
+                    text: t('menu.logout'),
                     style: 'destructive',
                     onPress: () => logout()
                 },
@@ -134,63 +137,66 @@ export default function MenuScreen() {
                 <View className="h-4" />
 
                 {/* Account Section */}
-                <MenuSection title="Akun Saya">
+                <MenuSection title={t('menu.myAccount')}>
                     <MenuItem
                         icon={User}
-                        label="Profil"
-                        description="Lihat dan edit profil Anda"
+                        label={t('menu.profile')}
+                        description={t('menu.profileDesc')}
                         onPress={() => navigation.navigate('Profile')}
                     />
                     <View className="h-px bg-gray-100 mx-4" />
                     <MenuItem
                         icon={Bell}
-                        label="Notifikasi"
-                        description="Pemberitahuan dan alert"
+                        label={t('menu.notifications')}
+                        description={t('menu.notificationsDesc')}
                         onPress={() => navigation.navigate('Notifications')}
                         badge={3}
                     />
+                    <View className="h-px bg-gray-100 mx-4" />
+                    {/* Language Selector */}
+                    <LanguageSelector variant="menu-item" />
                 </MenuSection>
 
                 {/* Admin Section */}
                 {isAdmin && (
-                    <MenuSection title="Admin Panel">
+                    <MenuSection title={t('menu.adminPanel')}>
                         <MenuItem
                             icon={Users}
-                            label="Kelola Users"
-                            description="Manajemen pengguna"
-                            onPress={() => Alert.alert('Segera Hadir', 'Fitur pengelolaan user akan segera hadir.')}
+                            label={t('menu.manageUsers')}
+                            description={t('menu.manageUsersDesc')}
+                            onPress={() => Alert.alert(t('common.comingSoon'), t('menu.manageUsersDesc'))}
                         />
                         <View className="h-px bg-gray-100 mx-4" />
                         <MenuItem
                             icon={Building}
-                            label="Master Cabang"
-                            description="Kelola data cabang"
-                            onPress={() => Alert.alert('Segera Hadir', 'Fitur master cabang akan segera hadir.')}
+                            label={t('menu.masterBranch')}
+                            description={t('menu.masterBranchDesc')}
+                            onPress={() => Alert.alert(t('common.comingSoon'), t('menu.masterBranchDesc'))}
                         />
                         <View className="h-px bg-gray-100 mx-4" />
                         <MenuItem
                             icon={Layers}
-                            label="Master Unit"
-                            description="Kelola data unit"
-                            onPress={() => Alert.alert('Segera Hadir', 'Fitur master unit akan segera hadir.')}
+                            label={t('menu.masterUnit')}
+                            description={t('menu.masterUnitDesc')}
+                            onPress={() => Alert.alert(t('common.comingSoon'), t('menu.masterUnitDesc'))}
                         />
                         <View className="h-px bg-gray-100 mx-4" />
                         <MenuItem
                             icon={CreditCard}
-                            label="Mata Anggaran"
-                            description="Kelola mata anggaran"
-                            onPress={() => Alert.alert('Segera Hadir', 'Fitur master mata anggaran akan segera hadir.')}
+                            label={t('menu.budgetItem')}
+                            description={t('menu.budgetItemDesc')}
+                            onPress={() => Alert.alert(t('common.comingSoon'), t('menu.budgetItemDesc'))}
                         />
                     </MenuSection>
                 )}
 
                 {/* Support Section */}
-                <MenuSection title="Bantuan & Info">
+                <MenuSection title={t('menu.helpInfo')}>
                     <MenuItem
                         icon={Smartphone}
-                        label="Tentang Aplikasi"
-                        description="Versi dan info"
-                        onPress={() => Alert.alert('Kas Kecil', 'Versi 1.0.0\n\nSistem Pengelolaan Kas Kecil Modern')}
+                        label={t('menu.aboutApp')}
+                        description={t('menu.aboutAppDesc')}
+                        onPress={() => Alert.alert(t('common.appName'), `${t('common.version')} 1.0.0\n\n${t('common.appTagline')}`)}
                     />
                 </MenuSection>
 
@@ -204,7 +210,7 @@ export default function MenuScreen() {
                         <View className="w-10 h-10 bg-red-100 rounded-xl items-center justify-center mr-3">
                             <LogOut size={20} color="#EF4444" />
                         </View>
-                        <Text className="text-red-500 font-bold text-base">Keluar dari Akun</Text>
+                        <Text className="text-red-500 font-bold text-base">{t('menu.logout')}</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -214,7 +220,7 @@ export default function MenuScreen() {
                         <View className="w-8 h-8 bg-blue-100 rounded-lg items-center justify-center mr-2">
                             <Text className="text-blue-600 font-bold text-xs">KK</Text>
                         </View>
-                        <Text className="text-gray-400 font-medium">Kas Kecil</Text>
+                        <Text className="text-gray-400 font-medium">{t('common.appName')}</Text>
                     </View>
                     <Text className="text-gray-300 text-xs">v1.0.0 • © 2026</Text>
                 </View>

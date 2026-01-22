@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { BottomTabParamList, DraftStackParamList, MenuStackParamList, TransaksiStackParamList } from './types';
 import { Home, Wallet, FileText, PieChart, Menu } from 'lucide-react-native';
 import { View, Platform } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 // Screens
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
@@ -63,6 +64,8 @@ function MenuNavigator() {
 }
 
 export default function BottomTabNavigator() {
+    const { t } = useTranslation();
+
     return (
         <Tab.Navigator
             screenOptions={{
@@ -96,7 +99,7 @@ export default function BottomTabNavigator() {
                             <Home color={color} size={22} />
                         </View>
                     ),
-                    tabBarLabel: 'Beranda',
+                    tabBarLabel: t('nav.home'),
                 }}
             />
             <Tab.Screen
@@ -108,7 +111,7 @@ export default function BottomTabNavigator() {
                             <Wallet color={color} size={22} />
                         </View>
                     ),
-                    tabBarLabel: 'Transaksi',
+                    tabBarLabel: t('nav.transaction'),
                 }}
             />
 
@@ -121,7 +124,7 @@ export default function BottomTabNavigator() {
                             <PieChart color={color} size={22} />
                         </View>
                     ),
-                    tabBarLabel: 'Laporan',
+                    tabBarLabel: t('nav.report'),
                 }}
             />
             <Tab.Screen
@@ -133,7 +136,7 @@ export default function BottomTabNavigator() {
                             <Menu color={color} size={22} />
                         </View>
                     ),
-                    tabBarLabel: 'Menu',
+                    tabBarLabel: t('nav.menu'),
                 }}
             />
         </Tab.Navigator>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, RefreshControl } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useDraft } from '@/lib/api-client';
 import { Plus, FileText, Clock, CheckCircle, XCircle } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -8,6 +9,7 @@ import { EmptyState } from '../../components/ui';
 
 export default function DraftListScreen() {
     const navigation = useNavigation<any>();
+    const { t } = useTranslation();
     const { data, isLoading, refetch } = useDraft();
     const [refreshing, setRefreshing] = React.useState(false);
 
@@ -43,21 +45,21 @@ export default function DraftListScreen() {
 
     const translateStatus = (status: string) => {
         switch (status) {
-            case 'approved': return 'Disetujui';
-            case 'rejected': return 'Ditolak';
-            default: return 'Menunggu';
+            case 'approved': return t('draft.approved');
+            case 'rejected': return t('draft.rejected');
+            default: return t('draft.pending');
         }
     };
 
     return (
         <SafeAreaView className="flex-1 bg-gray-50" edges={['top']}>
             <View className="px-6 py-4 bg-white border-b border-gray-100 flex-row justify-between items-center">
-                <Text className="text-2xl font-bold text-gray-900">Draft Anggaran</Text>
+                <Text className="text-2xl font-bold text-gray-900">{t('draft.title')}</Text>
             </View>
 
             {isLoading ? (
                 <View className="flex-1 justify-center items-center">
-                    <Text className="text-gray-500">Memuat data...</Text>
+                    <Text className="text-gray-500">{t('common.loading')}</Text>
                 </View>
             ) : (
                 <FlatList
@@ -70,9 +72,9 @@ export default function DraftListScreen() {
                     ListEmptyComponent={
                         <EmptyState
                             icon={FileText}
-                            title="Belum Ada Draft"
-                            description="Buat pengajuan draft baru untuk memulai proses persetujuan."
-                            actionLabel="Buat Draft Baru"
+                            title={t('draft.emptyTitle')}
+                            description={t('draft.emptyDesc')}
+                            actionLabel={t('draft.create')}
                             onAction={() => navigation.navigate('DraftCreate')}
                         />
                     }

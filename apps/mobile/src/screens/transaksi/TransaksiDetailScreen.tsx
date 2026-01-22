@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Linking, Alert } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useTransaksiDetail, useTransaksi, transaksiService, useDraft, useDraftDetail, draftService } from '@/lib/api-client';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -22,6 +23,7 @@ import { formatDateTime } from '@/lib/shared';
 export default function TransaksiDetailScreen() {
     const route = useRoute<any>();
     const navigation = useNavigation<any>();
+    const { t } = useTranslation();
     const { id, is_draft } = route.params || {};
 
     const transactionQuery = useTransaksiDetail(is_draft ? undefined : id); // Only fetch if NOT draft
@@ -55,22 +57,17 @@ export default function TransaksiDetailScreen() {
     };
 
     const getKategoriLabel = (kategori: string) => {
-        switch (kategori) {
-            case 'pengeluaran': return 'Pengeluaran Kas';
-            case 'pembentukan': return 'Pembentukan Awal';
-            case 'pengisian': return 'Pengisian Kembali';
-            default: return kategori;
-        }
+        return t(`transaction.types.${kategori}`, { defaultValue: kategori });
     };
 
     const handleDelete = () => {
         Alert.alert(
-            'Hapus Transaksi',
-            'Apakah Anda yakin ingin menghapus transaksi ini? Data tidak dapat dikembalikan.',
+            t('transaction.delete'),
+            t('transaction.deleteConfirm'),
             [
-                { text: 'Batal', style: 'cancel' },
+                { text: t('common.cancel'), style: 'cancel' },
                 {
-                    text: 'Hapus',
+                    text: t('common.delete'),
                     style: 'destructive',
                     onPress: async () => {
                         if (!transaksi) return;
@@ -81,10 +78,10 @@ export default function TransaksiDetailScreen() {
                             } else {
                                 await remove(transaksi.id);
                             }
-                            Alert.alert('Sukses', 'Transaksi berhasil dihapus');
+                            Alert.alert(t('common.success'), t('transaction.deleteSuccess'));
                             navigation.goBack();
                         } catch (err) {
-                            Alert.alert('Gagal', 'Gagal menghapus transaksi');
+                            Alert.alert(t('common.error'), t('transaction.deleteError'));
                             setIsProcessing(false);
                         }
                     }
@@ -95,12 +92,12 @@ export default function TransaksiDetailScreen() {
 
     const handleCairkan = () => {
         Alert.alert(
-            'Cairkan Pengisian',
-            'Apakah Anda yakin ingin mencairkan pengisian kas ini?',
+            t('transaction.disburse'),
+            t('transaction.disburseConfirm'),
             [
-                { text: 'Batal', style: 'cancel' },
+                { text: t('common.cancel'), style: 'cancel' },
                 {
-                    text: 'Ya, Cairkan',
+                    text: t('transaction.disburseConfirmYes'),
                     onPress: async () => {
                         if (!transaksi) return;
                         try {
@@ -111,11 +108,11 @@ export default function TransaksiDetailScreen() {
 
                             await cairkan(transaksi.id);
 
-                            Alert.alert('Sukses', 'Pengisian kas berhasil dicairkan', [
+                            Alert.alert(t('common.success'), t('transaction.disburseSuccess'), [
                                 { text: 'OK', onPress: () => navigation.goBack() }
                             ]);
                         } catch (err: any) {
-                            Alert.alert('Gagal', err?.response?.data?.message || 'Gagal mencairkan pengisian kas');
+                            Alert.alert(t('common.error'), err?.response?.data?.message || t('transaction.disburseError'));
                         } finally {
                             setIsProcessing(false);
                         }
@@ -129,7 +126,7 @@ export default function TransaksiDetailScreen() {
         return (
             <SafeAreaView className="flex-1 bg-white justify-center items-center">
                 <ActivityIndicator size="large" color="#2563EB" />
-                <Text className="text-gray-500 mt-4">Memuat detail transaksi...</Text>
+                <Text className="text-gray-500 mt-4">{t('transaction.loadingDetail')}</Text>
             </SafeAreaView>
         );
     }
@@ -137,15 +134,15 @@ export default function TransaksiDetailScreen() {
     if (error || !transaksi) {
         return (
             <SafeAreaView className="flex-1 bg-white justify-center items-center p-6">
-                <Text className="text-red-500 text-lg font-bold mb-2">Terjadi Kesalahan</Text>
+                <Text className="text-red-500 text-lg font-bold mb-2">{t('common.error')}</Text>
                 <Text className="text-gray-500 text-center mb-6">
-                    Gagal memuat detail transaksi. Silakan coba lagi.
+                    {t('transaction.loadError')}
                 </Text>
                 <TouchableOpacity
                     onPress={() => navigation.goBack()}
                     className="bg-blue-600 px-6 py-3 rounded-xl"
                 >
-                    <Text className="text-white font-bold">Kembali</Text>
+                    <Text className="text-white font-bold">{t('common.back')}</Text>
                 </TouchableOpacity>
             </SafeAreaView>
         );
@@ -161,7 +158,7 @@ export default function TransaksiDetailScreen() {
                 >
                     <ArrowLeft size={24} color="#1F2937" />
                 </TouchableOpacity>
-                <Text className="text-xl font-bold text-gray-900">Detail Transaksi</Text>
+                <Text className="text-xl font-bold text-gray-900">{t('transaction.detail')}</Text>
             </View>
 
             <ScrollView className="flex-1" contentContainerStyle={{ padding: 24 }}>
@@ -193,14 +190,14 @@ export default function TransaksiDetailScreen() {
                     <View className="bg-white p-5 rounded-xl border border-gray-100">
                         <View className="flex-row items-center mb-3">
                             <FileText size={18} color="#4B5563" />
-                            <Text className="font-bold text-gray-800 ml-2">Keterangan</Text>
+                            <Text className="font-bold text-gray-800 ml-2">{t('transaction.description')}</Text>
                         </View>
                         <Text className="text-gray-600 leading-relaxed">
                             {transaksi.keterangan}
                         </Text>
                         {transaksi.no_bukti && (
                             <View className="mt-4 pt-4 border-t border-gray-50">
-                                <Text className="text-xs text-gray-400 mb-1">No. Bukti</Text>
+                                <Text className="text-xs text-gray-400 mb-1">{t('transaction.proofNumber')}</Text>
                                 <Text className="text-gray-800 font-medium">{transaksi.no_bukti}</Text>
                             </View>
                         )}
@@ -209,18 +206,18 @@ export default function TransaksiDetailScreen() {
                     <View className="bg-white p-5 rounded-xl border border-gray-100">
                         <View className="flex-row items-center mb-4">
                             <CreditCard size={18} color="#4B5563" />
-                            <Text className="font-bold text-gray-800 ml-2">Anggaran</Text>
+                            <Text className="font-bold text-gray-800 ml-2">{t('transaction.budget')}</Text>
                         </View>
 
                         <View className="mb-4">
-                            <Text className="text-xs text-gray-400 mb-1">Kode Mata Anggaran</Text>
+                            <Text className="text-xs text-gray-400 mb-1">{t('transaction.budgetCode')}</Text>
                             <Text className="text-gray-800 font-medium font-mono bg-gray-50 self-start px-2 py-1 rounded">
                                 {transaksi.mata_anggaran?.kode_matanggaran || transaksi.kode_matanggaran || '-'}
                             </Text>
                         </View>
 
                         <View>
-                            <Text className="text-xs text-gray-400 mb-1">Nama Mata Anggaran</Text>
+                            <Text className="text-xs text-gray-400 mb-1">{t('transaction.budgetName')}</Text>
                             <Text className="text-gray-800 font-medium">
                                 {transaksi.mata_anggaran?.nama_matanggaran || '-'}
                             </Text>
@@ -229,12 +226,11 @@ export default function TransaksiDetailScreen() {
 
 
 
-                    {/* Attachments */}
                     {(transaksi.lampiran || transaksi.lampiran2 || transaksi.lampiran3) && (
                         <View className="bg-white p-5 rounded-xl border border-gray-100 pb-2">
                             <View className="flex-row items-center mb-4">
                                 <Paperclip size={18} color="#4B5563" />
-                                <Text className="font-bold text-gray-800 ml-2">Lampiran</Text>
+                                <Text className="font-bold text-gray-800 ml-2">{t('transaction.attachment')}</Text>
                             </View>
 
                             {[transaksi.lampiran, transaksi.lampiran2, transaksi.lampiran3].map((lampiran, index) => {
@@ -254,7 +250,7 @@ export default function TransaksiDetailScreen() {
                                                 <FileText size={16} color="#B91C1C" />
                                             </View>
                                             <Text className="text-gray-700 font-medium text-sm flex-1" numberOfLines={1}>
-                                                Lampiran {index + 1}
+                                                {t('transaction.attachment')} {index + 1}
                                             </Text>
                                         </View>
                                         <Download size={18} color="#4B5563" />
@@ -279,7 +275,7 @@ export default function TransaksiDetailScreen() {
                             ) : (
                                 <>
                                     <CheckCircle size={20} color="white" className="mr-2" />
-                                    <Text className="text-white font-bold text-lg ml-2">Cairkan Pengisian</Text>
+                                    <Text className="text-white font-bold text-lg ml-2">{t('transaction.disburse')}</Text>
                                 </>
                             )}
                         </TouchableOpacity>
@@ -300,7 +296,7 @@ export default function TransaksiDetailScreen() {
                                 className="bg-blue-600 p-4 rounded-xl flex-row justify-center items-center shadow-sm mb-3"
                             >
                                 <Edit size={20} color="white" className="mr-2" />
-                                <Text className="text-white font-bold text-lg ml-2">Edit Transaksi</Text>
+                                <Text className="text-white font-bold text-lg ml-2">{t('transaction.edit')}</Text>
                             </TouchableOpacity>
 
                             {/* Delete Button */}
@@ -314,7 +310,7 @@ export default function TransaksiDetailScreen() {
                                 ) : (
                                     <>
                                         <Trash2 size={20} color="#EF4444" className="mr-2" />
-                                        <Text className="text-red-600 font-bold text-lg ml-2">Hapus Transaksi</Text>
+                                        <Text className="text-red-600 font-bold text-lg ml-2">{t('transaction.delete')}</Text>
                                     </>
                                 )}
                             </TouchableOpacity>

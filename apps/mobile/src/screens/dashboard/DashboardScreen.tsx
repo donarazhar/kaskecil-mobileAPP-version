@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, Text, ScrollView, RefreshControl, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { useDashboard, useAuth, useTransaksi } from '@/lib/api-client';
 import { formatCurrency } from '@/lib/shared';
 import { ArrowUpRight, ArrowDownLeft, Plus, Wallet, Bell, TrendingDown, TrendingUp, Clock, BarChart3, ChevronRight, CreditCard } from 'lucide-react-native';
@@ -9,6 +10,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export default function DashboardScreen() {
     const navigation = useNavigation<any>();
+    const { t } = useTranslation();
     const { user } = useAuth();
     const { summary, refetch: refetchDashboard, isLoading: isDashboardLoading } = useDashboard();
 
@@ -45,25 +47,25 @@ export default function DashboardScreen() {
     // Stats Configuration
     const statsData = [
         {
-            title: 'Pembentukan',
+            title: t('dashboard.statSetup'),
             value: summary?.plafon || 0,
             icon: Wallet,
             gradient: ['#3B82F6', '#1D4ED8'],
         },
         {
-            title: 'Pengeluaran',
+            title: t('dashboard.statExpense'),
             value: summary?.total_pengeluaran || 0,
             icon: TrendingDown,
             gradient: ['#EF4444', '#DC2626'],
         },
         {
-            title: 'Saldo Berjalan',
+            title: t('dashboard.statBalance'),
             value: summary?.sisa_kas || 0,
             icon: TrendingUp,
             gradient: ['#10B981', '#059669'],
         },
         {
-            title: 'Belum Cair',
+            title: t('dashboard.statPending'),
             value: summary?.total_draft_pengisian || 0,
             icon: Clock,
             gradient: ['#F59E0B', '#D97706'],
@@ -72,10 +74,10 @@ export default function DashboardScreen() {
 
     // Categories for chart
     const categoryData = [
-        { label: 'ATK', value: summary?.total_pengeluaran ? summary.total_pengeluaran * 0.35 : 0, color: '#3B82F6' },
-        { label: 'Transport', value: summary?.total_pengeluaran ? summary.total_pengeluaran * 0.25 : 0, color: '#10B981' },
-        { label: 'Konsumsi', value: summary?.total_pengeluaran ? summary.total_pengeluaran * 0.20 : 0, color: '#F59E0B' },
-        { label: 'Lainnya', value: summary?.total_pengeluaran ? summary.total_pengeluaran * 0.20 : 0, color: '#8B5CF6' },
+        { label: t('category.atk'), value: summary?.total_pengeluaran ? summary.total_pengeluaran * 0.35 : 0, color: '#3B82F6' },
+        { label: t('category.transport'), value: summary?.total_pengeluaran ? summary.total_pengeluaran * 0.25 : 0, color: '#10B981' },
+        { label: t('category.consumption'), value: summary?.total_pengeluaran ? summary.total_pengeluaran * 0.20 : 0, color: '#F59E0B' },
+        { label: t('category.others'), value: summary?.total_pengeluaran ? summary.total_pengeluaran * 0.20 : 0, color: '#8B5CF6' },
     ];
     const maxChartValue = Math.max(...categoryData.map(d => d.value), 1);
 
@@ -97,11 +99,11 @@ export default function DashboardScreen() {
                 >
                     <View className="flex-row justify-between items-center">
                         <View className="flex-1">
-                            <Text className="text-white/70 text-sm font-medium">Selamat Datang,</Text>
+                            <Text className="text-white/70 text-sm font-medium">{t('dashboard.welcome')},</Text>
                             <Text className="text-white text-xl font-bold" numberOfLines={1}>{user?.nama}</Text>
                             <View className="flex-row items-center mt-1">
                                 <View className="w-2 h-2 bg-green-400 rounded-full mr-2" />
-                                <Text className="text-white/70 text-xs">{user?.unit?.nama || user?.cabang?.nama_cabang || 'Kas Kecil'}</Text>
+                                <Text className="text-white/70 text-xs">{user?.unit?.nama || user?.cabang?.nama_cabang || t('common.appName')}</Text>
                             </View>
                         </View>
                         <TouchableOpacity
@@ -119,7 +121,7 @@ export default function DashboardScreen() {
                     <View className="mt-6 bg-white/15 rounded-3xl p-5 border border-white/20">
                         <View className="flex-row justify-between items-start">
                             <View>
-                                <Text className="text-white/70 text-sm">Saldo Tersedia</Text>
+                                <Text className="text-white/70 text-sm">{t('dashboard.totalBalance')}</Text>
                                 <Text className="text-white text-3xl font-bold mt-1">
                                     {isDashboardLoading ? '...' : formatCurrency(summary?.sisa_kas || 0)}
                                 </Text>
@@ -132,7 +134,7 @@ export default function DashboardScreen() {
                         {/* Usage Progress */}
                         <View className="mt-4">
                             <View className="flex-row justify-between mb-2">
-                                <Text className="text-white/70 text-xs">Penggunaan Plafon</Text>
+                                <Text className="text-white/70 text-xs">{t('dashboard.usageLimit')}</Text>
                                 <Text className="text-white font-semibold text-xs">{usagePercentage.toFixed(0)}%</Text>
                             </View>
                             <View className="h-2 bg-white/20 rounded-full overflow-hidden">
@@ -178,7 +180,7 @@ export default function DashboardScreen() {
                             activeOpacity={0.8}
                         >
                             <Plus size={20} color="white" />
-                            <Text className="text-white font-bold ml-2">Pengeluaran</Text>
+                            <Text className="text-white font-bold ml-2">{t('transaction.expense')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             className="flex-1 bg-emerald-600 rounded-2xl p-4 flex-row items-center justify-center"
@@ -186,7 +188,7 @@ export default function DashboardScreen() {
                             activeOpacity={0.8}
                         >
                             <Plus size={20} color="white" />
-                            <Text className="text-white font-bold ml-2">Pengisian</Text>
+                            <Text className="text-white font-bold ml-2">{t('transaction.income')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -199,7 +201,7 @@ export default function DashboardScreen() {
                                 <View className="w-10 h-10 bg-blue-100 rounded-xl items-center justify-center">
                                     <BarChart3 size={20} color="#3B82F6" />
                                 </View>
-                                <Text className="text-lg font-bold text-gray-900">Per Kategori</Text>
+                                <Text className="text-lg font-bold text-gray-900">{t('dashboard.perCategory')}</Text>
                             </View>
                         </View>
 
@@ -236,13 +238,13 @@ export default function DashboardScreen() {
                             <View className="w-10 h-10 bg-red-100 rounded-xl items-center justify-center">
                                 <TrendingDown size={20} color="#EF4444" />
                             </View>
-                            <Text className="text-gray-900 font-bold text-lg">Pengeluaran Terbaru</Text>
+                            <Text className="text-gray-900 font-bold text-lg">{t('dashboard.recentTransactions')}</Text>
                         </View>
                         <TouchableOpacity
                             onPress={() => navigation.navigate('Transaksi')}
                             className="flex-row items-center"
                         >
-                            <Text className="text-blue-600 font-semibold text-sm mr-1">Lihat Semua</Text>
+                            <Text className="text-blue-600 font-semibold text-sm mr-1">{t('dashboard.viewAll')}</Text>
                             <ChevronRight size={16} color="#2563EB" />
                         </TouchableOpacity>
                     </View>
@@ -252,7 +254,7 @@ export default function DashboardScreen() {
                     ) : (pengeluaranData?.pages?.[0]?.data?.length || 0) === 0 ? (
                         <View className="bg-white p-8 rounded-2xl items-center border-2 border-dashed border-gray-200">
                             <TrendingDown size={32} color="#D1D5DB" />
-                            <Text className="text-gray-400 text-sm mt-2">Belum ada pengeluaran</Text>
+                            <Text className="text-gray-400 text-sm mt-2">{t('dashboard.noTransactions')}</Text>
                         </View>
                     ) : (
                         <View className="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100">
@@ -290,13 +292,13 @@ export default function DashboardScreen() {
                             <View className="w-10 h-10 bg-emerald-100 rounded-xl items-center justify-center">
                                 <Wallet size={20} color="#10B981" />
                             </View>
-                            <Text className="text-gray-900 font-bold text-lg">Riwayat Pengisian</Text>
+                            <Text className="text-gray-900 font-bold text-lg">{t('dashboard.recentIncome')}</Text>
                         </View>
                         <TouchableOpacity
                             onPress={() => navigation.navigate('Transaksi')}
                             className="flex-row items-center"
                         >
-                            <Text className="text-blue-600 font-semibold text-sm mr-1">Lihat Semua</Text>
+                            <Text className="text-blue-600 font-semibold text-sm mr-1">{t('dashboard.viewAll')}</Text>
                             <ChevronRight size={16} color="#2563EB" />
                         </TouchableOpacity>
                     </View>
@@ -306,7 +308,7 @@ export default function DashboardScreen() {
                     ) : (pengisianData?.pages?.[0]?.data?.length || 0) === 0 ? (
                         <View className="bg-white p-8 rounded-2xl items-center border-2 border-dashed border-gray-200">
                             <Wallet size={32} color="#D1D5DB" />
-                            <Text className="text-gray-400 text-sm mt-2">Belum ada pengisian</Text>
+                            <Text className="text-gray-400 text-sm mt-2">{t('dashboard.noTransactions')}</Text>
                         </View>
                     ) : (
                         <View className="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100">

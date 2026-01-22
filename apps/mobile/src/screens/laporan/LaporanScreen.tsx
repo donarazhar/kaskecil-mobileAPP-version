@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, ScrollView, TouchableOpacity, Alert, Linking, Platform, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
@@ -19,6 +20,7 @@ import {
 
 export default function LaporanScreen() {
     const navigation = useNavigation<any>();
+    const { t } = useTranslation();
     const [tanggalAwal, setTanggalAwal] = useState<Date | null>(null);
     const [tanggalAkhir, setTanggalAkhir] = useState<Date | null>(null);
     const [showDatePickerAwal, setShowDatePickerAwal] = useState(false);
@@ -26,7 +28,7 @@ export default function LaporanScreen() {
     const [isLoading, setIsLoading] = useState(false);
 
     const formatDate = (date: Date | null) => {
-        if (!date) return 'Pilih Tanggal';
+        if (!date) return t('report.selectDate');
         return date.toLocaleDateString('id-ID', {
             day: 'numeric',
             month: 'long',
@@ -43,12 +45,12 @@ export default function LaporanScreen() {
 
     const handlePrint = async () => {
         if (!tanggalAwal || !tanggalAkhir) {
-            Alert.alert('Perhatian', 'Mohon pilih tanggal awal dan tanggal akhir');
+            Alert.alert(t('common.attention'), t('report.dateRequired'));
             return;
         }
 
         if (tanggalAwal > tanggalAkhir) {
-            Alert.alert('Perhatian', 'Tanggal awal tidak boleh lebih besar dari tanggal akhir');
+            Alert.alert(t('common.attention'), t('report.dateInvalid'));
             return;
         }
 
@@ -63,11 +65,11 @@ export default function LaporanScreen() {
             if (supported) {
                 await Linking.openURL(url);
             } else {
-                Alert.alert('Error', 'Tidak dapat membuka laporan. Pastikan Anda memiliki aplikasi browser.');
+                Alert.alert(t('common.error'), t('report.errorOpen'));
             }
         } catch (error) {
             console.error(error);
-            Alert.alert('Error', 'Gagal membuka laporan. Silakan coba lagi.');
+            Alert.alert(t('common.error'), t('report.errorGeneral'));
         } finally {
             setIsLoading(false);
         }
@@ -125,8 +127,8 @@ export default function LaporanScreen() {
                         <FileText size={24} color="white" />
                     </View>
                     <View>
-                        <Text className="text-2xl font-bold text-white">Laporan</Text>
-                        <Text className="text-white/70 text-sm">Cetak Laporan Kas Kecil</Text>
+                        <Text className="text-2xl font-bold text-white">{t('report.title')}</Text>
+                        <Text className="text-white/70 text-sm">{t('report.subtitle')}</Text>
                     </View>
                 </View>
             </LinearGradient>
@@ -138,42 +140,42 @@ export default function LaporanScreen() {
                         <Info size={20} color="#2563EB" />
                     </View>
                     <View className="flex-1">
-                        <Text className="text-blue-800 font-bold mb-1">Panduan Cetak</Text>
+                        <Text className="text-blue-800 font-bold mb-1">{t('report.guideTitle')}</Text>
                         <Text className="text-blue-700 text-sm leading-5">
-                            Pilih tanggal awal dan akhir periode, kemudian tekan tombol Cetak Laporan
+                            {t('report.guideContent')}
                         </Text>
                     </View>
                 </View>
 
                 {/* Quick Period Buttons */}
-                <Text className="text-gray-500 font-semibold text-sm mb-3 px-1">Periode Cepat</Text>
+                <Text className="text-gray-500 font-semibold text-sm mb-3 px-1">{t('report.quickPeriod')}</Text>
                 <View className="flex-row gap-2 mb-6">
                     <TouchableOpacity
                         className="flex-1 bg-white py-3 rounded-xl border border-gray-200 items-center"
                         onPress={() => setQuickPeriod('this_month')}
                         activeOpacity={0.7}
                     >
-                        <Text className="text-gray-700 font-semibold text-sm">Bulan Ini</Text>
+                        <Text className="text-gray-700 font-semibold text-sm">{t('report.thisMonth')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         className="flex-1 bg-white py-3 rounded-xl border border-gray-200 items-center"
                         onPress={() => setQuickPeriod('last_month')}
                         activeOpacity={0.7}
                     >
-                        <Text className="text-gray-700 font-semibold text-sm">Bulan Lalu</Text>
+                        <Text className="text-gray-700 font-semibold text-sm">{t('report.lastMonth')}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         className="flex-1 bg-white py-3 rounded-xl border border-gray-200 items-center"
                         onPress={() => setQuickPeriod('this_year')}
                         activeOpacity={0.7}
                     >
-                        <Text className="text-gray-700 font-semibold text-sm">Tahun Ini</Text>
+                        <Text className="text-gray-700 font-semibold text-sm">{t('report.thisYear')}</Text>
                     </TouchableOpacity>
                 </View>
 
                 {/* Date Range Card */}
                 <View className="bg-white rounded-3xl p-5 border border-gray-100 shadow-sm mb-6">
-                    <Text className="text-gray-900 font-bold text-lg mb-4">Pilih Periode Laporan</Text>
+                    <Text className="text-gray-900 font-bold text-lg mb-4">{t('report.periodTitle')}</Text>
 
                     {/* Tanggal Awal */}
                     <TouchableOpacity
@@ -185,7 +187,7 @@ export default function LaporanScreen() {
                             <Calendar size={20} color="#2563EB" />
                         </View>
                         <View className="flex-1">
-                            <Text className="text-gray-400 text-xs font-medium mb-0.5">TANGGAL AWAL</Text>
+                            <Text className="text-gray-400 text-xs font-medium mb-0.5">{t('report.startDate')}</Text>
                             <Text className={`font-semibold text-base ${tanggalAwal ? 'text-gray-900' : 'text-gray-400'}`}>
                                 {formatDate(tanggalAwal)}
                             </Text>
@@ -210,7 +212,7 @@ export default function LaporanScreen() {
                             <CalendarCheck size={20} color="#059669" />
                         </View>
                         <View className="flex-1">
-                            <Text className="text-gray-400 text-xs font-medium mb-0.5">TANGGAL AKHIR</Text>
+                            <Text className="text-gray-400 text-xs font-medium mb-0.5">{t('report.endDate')}</Text>
                             <Text className={`font-semibold text-base ${tanggalAkhir ? 'text-gray-900' : 'text-gray-400'}`}>
                                 {formatDate(tanggalAkhir)}
                             </Text>
@@ -235,16 +237,16 @@ export default function LaporanScreen() {
                             <Printer size={22} color="white" />
                         </View>
                         <Text className="text-white font-bold text-lg">
-                            {isLoading ? 'Memproses...' : 'Cetak Laporan PDF'}
+                            {isLoading ? t('report.processing') : t('report.printPdf')}
                         </Text>
                     </LinearGradient>
                 </TouchableOpacity>
 
                 {/* Additional Info */}
                 <View className="mt-6 bg-amber-50 p-4 rounded-2xl border border-amber-100">
-                    <Text className="text-amber-800 font-bold mb-1">💡 Tips</Text>
+                    <Text className="text-amber-800 font-bold mb-1">💡 {t('report.tipsTitle')}</Text>
                     <Text className="text-amber-700 text-sm leading-5">
-                        Laporan akan terbuka di browser dalam format PDF yang siap cetak atau simpan.
+                        {t('report.tipsContent')}
                     </Text>
                 </View>
             </ScrollView>

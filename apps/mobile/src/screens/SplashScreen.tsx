@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, Animated, Dimensions, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 
 const { width, height } = Dimensions.get('window');
 
@@ -9,6 +10,7 @@ interface SplashScreenProps {
 }
 
 export default function AnimatedSplashScreen({ onFinish }: SplashScreenProps) {
+    const { t } = useTranslation();
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const scaleAnim = useRef(new Animated.Value(0.8)).current;
     const progressAnim = useRef(new Animated.Value(0)).current;
@@ -70,8 +72,8 @@ export default function AnimatedSplashScreen({ onFinish }: SplashScreenProps) {
                     />
 
                     {/* App Name */}
-                    <Text className="text-white text-3xl font-bold mb-1">Kas Kecil</Text>
-                    <Text className="text-white/70 text-sm mb-6">Sistem Pengelolaan Kas Modern</Text>
+                    <Text className="text-white text-3xl font-bold mb-1">{t('common.appName')}</Text>
+                    <Text className="text-white/70 text-sm mb-6">{t('common.appTagline')}</Text>
 
                     {/* Progress Bar */}
                     <View style={{ width: 160 }}>
