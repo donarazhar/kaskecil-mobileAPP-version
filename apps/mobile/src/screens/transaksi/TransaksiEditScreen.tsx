@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { View, Text, TouchableOpacity, TextInput, ScrollView, Image, ActivityIndicator, Platform, Alert, Modal, FlatList } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { useTransaksi, useAuth, useMaster, useTransaksiDetail } from '@kas-kecil/api-client';
+import { useTransaksi, useAuth, useMaster, useTransaksiDetail } from '@/lib/api-client';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeft, Camera, Calendar, X, Image as ImageIcon, ChevronDown, Check, Search } from 'lucide-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as ImagePicker from 'expo-image-picker';
-import { formatDateTime } from '@kas-kecil/shared';
+import { formatDateTime } from '@/lib/shared';
 import clsx from 'clsx';
 
 export default function TransaksiEditScreen() {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Linking, Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { useTransaksiDetail, useTransaksi, transaksiService, useDraft, useDraftDetail, draftService } from '@kas-kecil/api-client';
+import { useTransaksiDetail, useTransaksi, transaksiService, useDraft, useDraftDetail, draftService } from '@/lib/api-client';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
     ArrowLeft,
@@ -17,7 +17,7 @@ import {
     CheckCircle
 } from 'lucide-react-native';
 import clsx from 'clsx';
-import { formatDateTime } from '@kas-kecil/shared';
+import { formatDateTime } from '@/lib/shared';
 
 export default function TransaksiDetailScreen() {
     const route = useRoute<any>();

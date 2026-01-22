@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput, ActivityIndicator, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '@kas-kecil/api-client';
+import { useAuth } from '@/lib/api-client';
 import { ArrowLeft, Save, User, Phone } from 'lucide-react-native';
 import { useForm, Controller } from 'react-hook-form';
 

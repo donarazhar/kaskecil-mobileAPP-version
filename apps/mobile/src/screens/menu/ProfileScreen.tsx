@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '@kas-kecil/api-client';
+import { useAuth } from '@/lib/api-client';
 import { ArrowLeft, Mail, Phone, Building, Briefcase, Calendar, Edit2, Shield, MapPin } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 

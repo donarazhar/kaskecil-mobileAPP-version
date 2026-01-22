@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Linking, Alert, Modal, TextInput } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { useDraftDetail, useDraft } from '@kas-kecil/api-client';
+import { useDraftDetail, useDraft } from '@/lib/api-client';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
     ArrowLeft,
@@ -17,7 +17,7 @@ import {
     Clock
 } from 'lucide-react-native';
 import clsx from 'clsx';
-import { formatDateTime, formatCurrency } from '@kas-kecil/shared';
+import { formatDateTime, formatCurrency } from '@/lib/shared';
 
 export default function DraftDetailScreen() {
     const route = useRoute<any>();

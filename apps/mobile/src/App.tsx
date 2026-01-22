@@ -3,8 +3,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import * as SecureStore from 'expo-secure-store';
 import * as NativeSplashScreen from 'expo-splash-screen';
-import { configureApiClient } from '@kas-kecil/api-client';
-import { STORAGE_KEYS } from '@kas-kecil/shared';
+import { configureApiClient } from '@/lib/api-client';
+import { STORAGE_KEYS } from '@/lib/shared';
 import RootNavigator from './navigation/RootNavigator';
 import AnimatedSplashScreen from './screens/SplashScreen';
 

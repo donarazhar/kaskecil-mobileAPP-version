@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, ActivityIndicator, Alert, KeyboardAvoidingView, Platform, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { authService } from '@kas-kecil/api-client';
+import { authService } from '@/lib/api-client';
 import { ArrowLeft, Mail, KeyRound } from 'lucide-react-native';
 import clsx from 'clsx';
 

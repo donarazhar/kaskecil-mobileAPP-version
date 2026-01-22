@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, TextInput, ActivityIndicator, Modal, ScrollView } from 'react-native';
-import { useTransaksi, useDraft } from '@kas-kecil/api-client';
-import { formatCurrency, formatDate } from '@kas-kecil/shared';
+import { useTransaksi, useDraft } from '@/lib/api-client';
+import { formatCurrency, formatDate } from '@/lib/shared';
 import { Plus, Search, ArrowUpRight, ArrowDownLeft, Calendar, Wallet, CheckCircle, Clock, ChevronDown, X, Filter, TrendingDown, TrendingUp } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';

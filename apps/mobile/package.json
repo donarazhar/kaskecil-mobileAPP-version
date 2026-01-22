@@ -12,9 +12,6 @@
     },
     "dependencies": {
         "@hookform/resolvers": "^3.9.0",
-        "@kas-kecil/api-client": "workspace:*",
-        "@kas-kecil/shared": "workspace:*",
-        "@kas-kecil/validators": "workspace:*",
         "@react-native-community/datetimepicker": "8.4.4",
         "@react-navigation/bottom-tabs": "^6.6.0",
         "@react-navigation/native": "^6.1.18",

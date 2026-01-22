@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParamList } from './types';
 import AuthNavigator from './AuthNavigator';
 import BottomTabNavigator from './BottomTabNavigator';
-import { useAuth } from '@kas-kecil/api-client';
+import { useAuth } from '@/lib/api-client';
 import { View, ActivityIndicator } from 'react-native';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

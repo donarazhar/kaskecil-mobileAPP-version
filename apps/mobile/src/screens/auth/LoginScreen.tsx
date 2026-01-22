@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, ActivityIndicator, SafeAreaView, KeyboardAvoidingView, Platform, Linking, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '@kas-kecil/api-client';
+import { useAuth } from '@/lib/api-client';
 import { Eye, EyeOff, Lock, Mail, ArrowRight } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 

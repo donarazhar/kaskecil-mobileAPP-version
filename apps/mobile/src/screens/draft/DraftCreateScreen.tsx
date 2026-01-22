@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, TextInput, ScrollView, ActivityIndicator, Platform, Alert, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useDraft, useAuth } from '@kas-kecil/api-client';
+import { useDraft, useAuth } from '@/lib/api-client';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeft, Calendar, FileText, Camera, Image as ImageIcon, X } from 'lucide-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as ImagePicker from 'expo-image-picker';
-import { formatDateTime } from '@kas-kecil/shared';
+import { formatDateTime } from '@/lib/shared';
 import clsx from 'clsx';
 
 export default function DraftCreateScreen() {

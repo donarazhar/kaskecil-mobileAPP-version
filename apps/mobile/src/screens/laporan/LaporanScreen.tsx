@@ -3,7 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, Alert, Linking, Platform, Mod
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { getApiConfig } from '@kas-kecil/api-client';
+import { getApiConfig } from '@/lib/api-client';
 import { LinearGradient } from 'expo-linear-gradient';
 import {
     FileText,

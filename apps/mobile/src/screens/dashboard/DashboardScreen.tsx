@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { View, Text, ScrollView, RefreshControl, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useDashboard, useAuth, useTransaksi } from '@kas-kecil/api-client';
-import { formatCurrency } from '@kas-kecil/shared';
+import { useDashboard, useAuth, useTransaksi } from '@/lib/api-client';
+import { formatCurrency } from '@/lib/shared';
 import { ArrowUpRight, ArrowDownLeft, Plus, Wallet, Bell, TrendingDown, TrendingUp, Clock, BarChart3, ChevronRight, CreditCard } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';

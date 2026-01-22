@@ -1070,7 +1070,7 @@
                     <span class="nav-item-icon">📱</span> Mobile App
                 </button>
                 <button class="nav-item" onclick="showTab('packages', this)">
-                    <span class="nav-item-icon">📦</span> Shared Packages
+                    <span class="nav-item-icon">📦</span> Mobile Lib
                 </button>
             </nav>
             <nav class="nav-section">
@@ -1109,11 +1109,12 @@
                 </header>
 
                 <div class="hero-box">
-                    <h3>🏗️ Monorepo Architecture</h3>
-                    <p>Aplikasi ini menggunakan pendekatan monorepo yang memungkinkan code sharing, konsistensi
-                        development, single source of truth, dan kemudahan maintenance. Semua aplikasi (API, Web,
-                        Mobile) dikembangkan dalam satu repository dengan shared packages untuk menghindari duplikasi
-                        kode.</p>
+                    <h3>🏗️ Simple Monorepo Architecture</h3>
+                    <p>Aplikasi ini menggunakan pendekatan simple monorepo dengan NPM workspaces. Semua aplikasi (API,
+                        Web,
+                        Mobile) dikembangkan dalam satu repository. Shared code (api-client, shared, validators)
+                        di-embed
+                        langsung di folder mobile/src/lib untuk kemudahan maintenance.</p>
                 </div>
 
                 <div class="card-grid">
@@ -1122,16 +1123,16 @@
                         <div class="stat-label">Aplikasi Utama</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number">3</div>
-                        <div class="stat-label">Shared Packages</div>
-                    </div>
-                    <div class="stat-card">
                         <div class="stat-number">11+</div>
                         <div class="stat-label">Database Models</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-number">MVC</div>
                         <div class="stat-label">Pattern</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">NPM</div>
+                        <div class="stat-label">Workspaces</div>
                     </div>
                 </div>
 
@@ -1150,16 +1151,10 @@
 │   ├── <span class="folder">api/</span>                 <span class="comment"># Backend Laravel 11</span>
 │   ├── <span class="folder">web/</span>                 <span class="comment"># Frontend React + Vite</span>
 │   └── <span class="folder">mobile/</span>              <span class="comment"># Mobile App React Native + Expo</span>
+│       └── <span class="folder">src/lib/</span>         <span class="comment"># Shared code (api-client, shared, validators)</span>
 │
-├── <span class="folder">packages/</span>                <span class="comment"># Shared packages (reusable)</span>
-│   ├── <span class="folder">api-client/</span>          <span class="comment"># HTTP client dengan Axios</span>
-│   ├── <span class="folder">validators/</span>          <span class="comment"># Validasi data dengan Zod</span>
-│   └── <span class="folder">shared/</span>              <span class="comment"># Types, constants, utilities</span>
-│
-├── <span class="folder">.github/</span>                 <span class="comment"># CI/CD workflows</span>
-├── <span class="file">package.json</span>             <span class="comment"># Workspace configuration</span>
-├── <span class="file">turbo.json</span>               <span class="comment"># Turborepo config</span>
-└── <span class="file">pnpm-workspace.yaml</span>      <span class="comment"># PNPM workspace</span></pre>
+├── <span class="folder">docs/</span>                    <span class="comment"># Dokumentasi aplikasi</span>
+└── <span class="file">package.json</span>             <span class="comment"># NPM workspace configuration</span></pre>
                 </div>
 
                 <h2>Arsitektur Layer (MVC Pattern)</h2>
@@ -1742,15 +1737,16 @@
             <div id="packages" class="tab-content">
                 <header class="page-header">
                     <div class="page-eyebrow">Shared Code</div>
-                    <h1>Shared Packages</h1>
-                    <p class="page-description">Packages yang digunakan bersama oleh web dan mobile untuk menghindari
-                        duplikasi kode dan memastikan konsistensi antar platform.</p>
+                    <h1>Mobile Lib</h1>
+                    <p class="page-description">Library shared yang di-embed di mobile app untuk API client,
+                        types, dan validators. Tersedia di folder apps/mobile/src/lib/</p>
                 </header>
 
                 <div class="hero-box">
-                    <h3>📦 Keuntungan Shared Packages</h3>
-                    <p>Dengan shared packages, perubahan dilakukan sekali dan langsung tersedia di semua aplikasi. Ini
-                        memastikan validation rules, API contracts, dan business logic konsisten antara web dan mobile.
+                    <h3>📦 Embedded Libraries</h3>
+                    <p>Shared code untuk mobile app di-embed langsung di folder src/lib/ untuk mempermudah maintenance.
+                        Ini termasuk api-client untuk HTTP requests, shared types/constants, dan validators untuk form
+                        validation.
                     </p>
                 </div>
 
@@ -1759,7 +1755,7 @@
                         <div class="card-icon logic">🔌</div>
                         <div class="card-title">
                             <h4>API Client</h4>
-                            <p><code>packages/api-client/</code></p>
+                            <p><code>apps/mobile/src/lib/api-client/</code></p>
                         </div>
                     </div>
                     <ul>
@@ -1776,7 +1772,7 @@
                         <div class="card-icon logic">✅</div>
                         <div class="card-title">
                             <h4>Validators</h4>
-                            <p><code>packages/validators/</code></p>
+                            <p><code>apps/mobile/src/lib/validators/</code></p>
                         </div>
                     </div>
                     <ul>
@@ -1792,7 +1788,7 @@
                         <div class="card-icon logic">🛠️</div>
                         <div class="card-title">
                             <h4>Shared</h4>
-                            <p><code>packages/shared/</code></p>
+                            <p><code>apps/mobile/src/lib/shared/</code></p>
                         </div>
                     </div>
                     <ul>
@@ -1828,7 +1824,8 @@
                     <div class="flow-step" data-step="1">
                         <span class="layer-tag view">VIEW</span>
                         <p>User mengisi form di <strong>TransaksiCreatePage.tsx</strong> (Web) atau
-                            <strong>TransaksiCreateScreen.tsx</strong> (Mobile)</p>
+                            <strong>TransaksiCreateScreen.tsx</strong> (Mobile)
+                        </p>
                     </div>
                     <div class="flow-step" data-step="2">
                         <span class="layer-tag logic">LOGIC</span>
@@ -1922,17 +1919,12 @@
                                 <td>Custom React hooks</td>
                             </tr>
                             <tr>
-                                <td>apps/mobile/src/screens/</td>
-                                <td>VIEW</td>
-                                <td>React Native screens</td>
-                            </tr>
-                            <tr>
-                                <td>packages/api-client/</td>
+                                <td>apps/mobile/src/lib/api-client/</td>
                                 <td>LOGIC</td>
                                 <td>API communication</td>
                             </tr>
                             <tr>
-                                <td>packages/validators/</td>
+                                <td>apps/mobile/src/lib/validators/</td>
                                 <td>LOGIC</td>
                                 <td>Data validation</td>
                             </tr>
