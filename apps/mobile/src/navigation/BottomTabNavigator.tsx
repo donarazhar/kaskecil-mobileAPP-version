@@ -5,6 +5,7 @@ import { BottomTabParamList, DraftStackParamList, MenuStackParamList, TransaksiS
 import { Home, Wallet, FileText, PieChart, Menu } from 'lucide-react-native';
 import { View, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 // Screens
 import DashboardScreen from '../screens/dashboard/DashboardScreen';
@@ -65,6 +66,7 @@ function MenuNavigator() {
 
 export default function BottomTabNavigator() {
     const { t } = useTranslation();
+    const insets = useSafeAreaInsets();
 
     return (
         <Tab.Navigator
@@ -80,9 +82,9 @@ export default function BottomTabNavigator() {
                     shadowOffset: { width: 0, height: -4 },
                     shadowOpacity: 0.08,
                     shadowRadius: 12,
-                    height: Platform.OS === 'ios' ? 88 : 70,
-                    paddingTop: 8,
-                    paddingBottom: Platform.OS === 'ios' ? 28 : 12,
+                    height: 70 + (Platform.OS === 'android' ? Math.max(insets.bottom, 15) : insets.bottom),
+                    paddingTop: 10,
+                    paddingBottom: Platform.OS === 'android' ? Math.max(insets.bottom, 15) : insets.bottom,
                 },
                 tabBarLabelStyle: {
                     fontSize: 11,
