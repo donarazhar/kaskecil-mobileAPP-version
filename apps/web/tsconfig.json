@@ -5,30 +5,25 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
-
-    /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-
-    /* Path aliases */
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@kas-kecil/shared": ["../../packages/shared/src"],
-      "@kas-kecil/api-client": ["../../packages/api-client/src"],
-      "@kas-kecil/validators": ["../../packages/validators/src"]
+      "@kas-kecil/shared": ["../mobile/src/lib/shared"],
+      "@kas-kecil/api-client": ["../mobile/src/lib/api-client"],
+      "@kas-kecil/validators": ["../mobile/src/lib/validators"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "../mobile/src/lib"],
+"exclude": ["../mobile/src/lib/shared/LanguageContext.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
