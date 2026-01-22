@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
-import { View, Text, ScrollView, RefreshControl, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, RefreshControl, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDashboard, useAuth, useTransaksi } from '@/lib/api-client';
 import { formatCurrency } from '@/lib/shared';
-import { ArrowUpRight, ArrowDownLeft, Plus, Wallet, Bell, TrendingDown, TrendingUp, Clock, BarChart3, ChevronRight, CreditCard } from 'lucide-react-native';
+import { ArrowUpRight, ArrowDownLeft, Plus, Wallet, TrendingDown, TrendingUp, Clock, BarChart3, ChevronRight, CreditCard, LogOut } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -11,8 +11,23 @@ import { LinearGradient } from 'expo-linear-gradient';
 export default function DashboardScreen() {
     const navigation = useNavigation<any>();
     const { t } = useTranslation();
-    const { user } = useAuth();
+    const { user, logout } = useAuth();
     const { summary, refetch: refetchDashboard, isLoading: isDashboardLoading } = useDashboard();
+
+    const handleLogout = () => {
+        Alert.alert(
+            t('menu.logoutTitle'),
+            t('menu.logoutConfirm'),
+            [
+                { text: t('common.cancel'), style: 'cancel' },
+                {
+                    text: t('menu.logout'),
+                    style: 'destructive',
+                    onPress: () => logout()
+                },
+            ]
+        );
+    };
 
     // Separate hooks for different transaction lists
     const { data: pengeluaranData, isLoading: isPengeluaranLoading, refetch: refetchPengeluaran } = useTransaksi({
@@ -108,12 +123,9 @@ export default function DashboardScreen() {
                         </View>
                         <TouchableOpacity
                             className="w-12 h-12 bg-white/20 rounded-2xl items-center justify-center"
-                            onPress={() => navigation.navigate('Notifications')}
+                            onPress={handleLogout}
                         >
-                            <Bell size={22} color="white" />
-                            <View className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full items-center justify-center border-2 border-white">
-                                <Text className="text-white text-[10px] font-bold">3</Text>
-                            </View>
+                            <LogOut size={22} color="white" />
                         </TouchableOpacity>
                     </View>
 
