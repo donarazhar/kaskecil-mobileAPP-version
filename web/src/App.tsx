@@ -20,6 +20,7 @@ import AkunAASListPage from "@/pages/master/akun-aas/AkunAASListPage";
 import MataAnggaranListPage from "@/pages/master/mata-anggaran/MataAnggaranListPage";
 import InstansiPage from "@/pages/master/instansi/InstansiPage";
 import { Navigate, Route, Routes } from "react-router-dom";
+import { ProtectedRoute, PublicRoute } from "@/components/auth/AuthGuards";
 
 import LaporanPage from "@/pages/laporan/LaporanPage";
 import LaporanAkunAasPage from "@/pages/laporan/LaporanAkunAasPage";
@@ -64,60 +65,70 @@ const PlaceholderPage = ({ title }: { title: string }) => (
 function App() {
   return (
     <Routes>
-      {/* Auth Routes */}
-      <Route element={<AuthLayout />}>
-        <Route path="/login" element={<LoginPage />} />
+      {/* Public Routes - only accessible when NOT logged in */}
+      <Route element={<PublicRoute />}>
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<LoginPage />} />
+        </Route>
       </Route>
 
-      {/* Dashboard Routes */}
-      <Route element={<DashboardLayout />}>
-        <Route path="/dashboard" element={<DashboardPage />} />
+      {/* Protected Routes - only accessible when logged in */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<DashboardLayout />}>
+          <Route path="/dashboard" element={<DashboardPage />} />
 
-        {/* Transaksi */}
-        <Route path="/transaksi" element={<TransaksiListPage />} />
-        <Route path="/transaksi/create" element={<TransaksiCreatePage />} />
-        <Route path="/transaksi/:id/edit" element={<TransaksiEditPage />} />
+          {/* Transaksi */}
+          <Route path="/transaksi" element={<TransaksiListPage />} />
+          <Route path="/transaksi/create" element={<TransaksiCreatePage />} />
+          <Route path="/transaksi/:id/edit" element={<TransaksiEditPage />} />
 
-        {/* Pengajuan/Draft - placeholder */}
-        <Route path="/drafts" element={<PlaceholderPage title="Pengajuan" />} />
-        <Route
-          path="/drafts/create"
-          element={<PlaceholderPage title="Buat Pengajuan" />}
-        />
+          {/* Pengajuan/Draft - placeholder */}
+          <Route
+            path="/drafts"
+            element={<PlaceholderPage title="Pengajuan" />}
+          />
+          <Route
+            path="/drafts/create"
+            element={<PlaceholderPage title="Buat Pengajuan" />}
+          />
 
-        {/* Pengisian */}
-        <Route path="/pengisian" element={<PengisianListPage />} />
-        <Route path="/pengisian/create" element={<PengisianCreatePage />} />
-        <Route path="/pengisian/:id/edit" element={<PengisianEditPage />} />
+          {/* Pengisian */}
+          <Route path="/pengisian" element={<PengisianListPage />} />
+          <Route path="/pengisian/create" element={<PengisianCreatePage />} />
+          <Route path="/pengisian/:id/edit" element={<PengisianEditPage />} />
 
-        {/* Laporan */}
-        <Route path="/laporan/cetak" element={<LaporanPage />} />
-        <Route path="/laporan/akun-aas" element={<LaporanAkunAasPage />} />
-        <Route path="/laporan/transaksi" element={<LaporanTransaksiPage />} />
+          {/* Laporan */}
+          <Route path="/laporan/cetak" element={<LaporanPage />} />
+          <Route path="/laporan/akun-aas" element={<LaporanAkunAasPage />} />
+          <Route path="/laporan/transaksi" element={<LaporanTransaksiPage />} />
 
-        {/* Users */}
-        <Route path="/users" element={<UserListPage />} />
-        <Route path="/users/create" element={<UserCreatePage />} />
-        <Route path="/users/:id" element={<UserDetailPage />} />
-        <Route path="/users/:id/edit" element={<UserCreatePage />} />
+          {/* Users */}
+          <Route path="/users" element={<UserListPage />} />
+          <Route path="/users/create" element={<UserCreatePage />} />
+          <Route path="/users/:id" element={<UserDetailPage />} />
+          <Route path="/users/:id/edit" element={<UserCreatePage />} />
 
-        {/* Master Data */}
-        <Route path="/master/instansi" element={<InstansiPage />} />
+          {/* Master Data */}
+          <Route path="/master/instansi" element={<InstansiPage />} />
 
-        <Route path="/master/cabang" element={<CabangListPage />} />
-        <Route path="/master/cabang/create" element={<CabangCreatePage />} />
-        <Route path="/master/cabang/:id/edit" element={<CabangCreatePage />} />
+          <Route path="/master/cabang" element={<CabangListPage />} />
+          <Route path="/master/cabang/create" element={<CabangCreatePage />} />
+          <Route
+            path="/master/cabang/:id/edit"
+            element={<CabangCreatePage />}
+          />
 
-        <Route path="/master/unit" element={<UnitListPage />} />
-        <Route path="/master/unit/create" element={<UnitCreatePage />} />
-        <Route path="/master/unit/:id/edit" element={<UnitCreatePage />} />
+          <Route path="/master/unit" element={<UnitListPage />} />
+          <Route path="/master/unit/create" element={<UnitCreatePage />} />
+          <Route path="/master/unit/:id/edit" element={<UnitCreatePage />} />
 
-        <Route path="/master/akun-aas" element={<AkunAASListPage />} />
+          <Route path="/master/akun-aas" element={<AkunAASListPage />} />
 
-        <Route
-          path="/master/mata-anggaran"
-          element={<MataAnggaranListPage />}
-        />
+          <Route
+            path="/master/mata-anggaran"
+            element={<MataAnggaranListPage />}
+          />
+        </Route>
       </Route>
 
       {/* Redirect */}

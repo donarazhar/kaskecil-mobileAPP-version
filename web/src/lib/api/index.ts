@@ -1,13 +1,12 @@
 import axios from 'axios';
 
-// API Client
+// API Client - using Bearer token auth (no credentials/cookies needed)
 export const apiClient = axios.create({
     baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
     },
-    withCredentials: true,
 });
 
 export const configureApiClient = (config: any) => {
