@@ -18,11 +18,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'unit.access' => \App\Http\Middleware\CheckUnitAccess::class,
         ]);
 
-        $middleware->api(prepend: [
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-        ]);
-
-        $middleware->statefulApi();
+        // Pure token-based auth - no CSRF required
+        // Comment out stateful middleware for cross-domain API
+        // $middleware->api(prepend: [
+        //     \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        // ]);
+        // $middleware->statefulApi();
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (\Illuminate\Auth\AuthenticationException $e, \Illuminate\Http\Request $request) {
