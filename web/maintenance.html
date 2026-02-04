@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaskecil Server Status</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f0f2f5; color: #333; }
+        .container { text-align: center; background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); max-width: 500px; }
+        h1 { color: #10b981; margin-bottom: 0.5rem; }
+        .status-badge { display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px; font-weight: bold; font-size: 0.875rem; margin-bottom: 2rem; }
+        .online { background-color: #d1fae5; color: #065f46; }
+        .maintenance { background-color: #fef3c7; color: #92400e; }
+        .details { text-align: left; background: #f9fafb; padding: 1rem; border-radius: 6px; margin-top: 1rem; }
+        .detail-row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; }
+        .label { font-weight: 600; color: #6b7280; }
+        code { background: #e5e7eb; padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Server Online</h1>
+        <span class="status-badge online">System Operational</span>
+        
+        <p>Backend Server Kas Kecil berjalan normal.</p>
+        
+        <div class="details">
+            <div class="detail-row">
+                <span class="label">API Status</span>
+                <span style="color: #10b981;">✅ Online</span>
+            </div>
+            <div class="detail-row">
+                <span class="label">API Endpoint</span>
+                <code>/api</code>
+            </div>
+            <div class="detail-row">
+                <span class="label">Mobile App</span>
+                <span style="color: #10b981;">✅ Ready</span>
+            </div>
+            <div class="detail-row">
+                <span class="label">Web App</span>
+                <span style="color: #f59e0b;">⚠️ Maintenance</span>
+            </div>
+        </div>
+
+        <p style="font-size: 0.8em; color: #6b7280; margin-top: 2rem;">
+            Web Dashboard sedang dalam perbaikan (Source Code Incomplete).<br>
+            Silakan gunakan <strong>Mobile App</strong> untuk transaksi.
+        </p>
+    </div>
+</body>
+</html>
