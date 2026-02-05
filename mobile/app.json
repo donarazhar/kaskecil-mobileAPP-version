@@ -1,14 +1,12 @@
 {
   "expo": {
-    "name": "Kas Kecil Mobile",
+    "name": "Kas Kecil",
     "slug": "kas-kecil-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
       "backgroundColor": "#0053C5"
     },
     "assetBundlePatterns": [
@@ -35,6 +33,12 @@
       "eas": {
         "projectId": "1bd7fa86-f89a-4fa0-8fec-adcf6fe636f5"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/1bd7fa86-f89a-4fa0-8fec-adcf6fe636f5"
     }
   }
 }
